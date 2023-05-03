@@ -6,7 +6,6 @@ import logo from './Image/logo.jpg';
 import { Link } from "react-router-dom";
 
 const HeaderDesign = () => {
-
   const Header = styled.div`
     box-sizing : border-box;
     width: 100%;
@@ -42,8 +41,14 @@ const HeaderDesign = () => {
     background: white;
     margin-right: 20px;
     border: none;
+    border-radius: 5px;
     box-shadow: none;
     color: #495057;
+    cursor: pointer;
+    &:hover {
+      color: rgb(223, 214, 210);
+      transition: all .5s;
+    }
   `;
   const LogoButton = styled.button`
     background: white;
@@ -89,6 +94,7 @@ const HeaderDesign = () => {
       border: none;
       justify-content: center;
       align-items: center;
+      cursor: pointer;
       &:active {
         border: none;
       }
@@ -112,9 +118,13 @@ const HeaderDesign = () => {
     background: white;
     color: #495057;
     border: none;
+    border-radius: 5px;
     box-shadow: none;
-    &:nth-child(1) {
-      border-right: .3px solid gray;
+    cursor: pointer;
+    
+    &:hover {
+      color: rgb(223, 214, 210);
+      transition: all 1s;
     }
   `;
     

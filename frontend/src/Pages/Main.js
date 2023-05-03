@@ -20,15 +20,6 @@ const Container = styled.div` // 전체 영역을 설정 flexbox로 배치할 �
   flex-direction: column;
   position: relative;
 `;
-const Tmp = styled.div` // 배너 구현이 아직 완료되지 않아 임시로 설정한 배너 영역
-  width: 100vw;
-  height: 300px;
-  background: rgba(223, 214, 210);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: white;
-`;
 const DescBox = styled.div` // flex로 수직과 수평 배치를 한번에 컨트롤할 수 없다고 생각해서 카드를 담을 영역과 테마별 설명 영역 분리
   width: 1024px;
   height: 100px;
@@ -70,6 +61,7 @@ const Card = styled.div`
   height: 100%;
   background: rgb(193, 159, 138);
   border-radius: 10px;
+  cursor: pointer;
 `;
 const Main = () => {
     
