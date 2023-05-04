@@ -15,7 +15,7 @@ const Banner = () => {
     slidesToScroll: 1,
     centerMode: true,
     centerPadding: '0px',
-    pauseOnHover : true,
+    pauseOnHover : true
   };
   const BannerContainer = styled.div`
 

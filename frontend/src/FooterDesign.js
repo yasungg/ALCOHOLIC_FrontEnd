@@ -7,8 +7,11 @@ const FooterDesign = () => {
     flex-direction: column;
     margin-top: 100px;
     width: 100%;
-    height: 350px;
+    height: 200px;
     border-top: 1px solid rgb(223, 214, 210);
+    @media screen and (max-width: 1024px) {
+      height: 350px;
+    }
   `;
   const UpperBox = styled.div`
     width: 80%;
@@ -40,7 +43,7 @@ const FooterDesign = () => {
       margin-top: 5px;
     }
     .thirdLine {
-      font-size: .8em;
+      font-size: .6em;
       margin: 0;
     }
   `;
@@ -82,17 +85,17 @@ const FooterDesign = () => {
     display: flex;
     flex-direction: column;
     align-self: center;
-    width: 80%;
+    width: 80%; 
     margin: 0 20px 0 20px;
     .lowBoxA {
-      font-size: .9em;
+      font-size: .8em;
       text-decoration: none;
       &:visited {
         color: black;
       }
     }
     .lowBoxSpan {
-      font-size: .9em;
+      font-size: .8em;
     }
   `;
   
@@ -117,10 +120,12 @@ const FooterDesign = () => {
         </SNSBox>
       </UpperBox>
       <LowBox>
-        <span className="lowBoxSpan">대표 : 곽용석</span>
-        <a className="lowBoxA" href="/">사업자등록번호 : xxx-xx-xxxxx</a>
-        <span className="lowBoxSpan">통신판매 신고번호: 2021-서울서초-xxxx</span>
-
+        
+          <span className="lowBoxSpan">대표 : 곽용석</span>
+          <a className="lowBoxA" href="/">사업자등록번호 : xxx-xx-xxxxx</a>
+          <span className="lowBoxSpan">통신판매 신고번호: 2021-서울서초-xxxx</span>
+          <span className="lowBoxSpan">All right reserved. @masilang 2023.</span>
+        
       </LowBox>
     </FooterContainer>
   )

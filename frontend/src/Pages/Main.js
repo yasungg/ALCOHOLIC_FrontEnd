@@ -4,21 +4,15 @@ import Banner from "../Banner";
 import styled from "styled-components";
 import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
-import Slider from "react-slick";
-
-const images = [ // 아직 구현안됨
-  'https://via.placeholder.com/150x150.png?text=Image1',
-  'https://via.placeholder.com/150x150.png?text=Image2',
-  'https://via.placeholder.com/150x150.png?text=Image3',
-];
+import DescBoxIcon1 from "../Image/부모님.png";
+import DescBoxIcon2 from "../Image/벚꽃.png";
 
 const Container = styled.div` // 전체 영역을 설정 flexbox로 배치할 때 기준이 필요할 것이라 생각했기 때문
   box-sizing: border-box;
-  width: 100vw;
+  width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
-  position: relative;
 `;
 const DescBox = styled.div` // flex로 수직과 수평 배치를 한번에 컨트롤할 수 없다고 생각해서 카드를 담을 영역과 테마별 설명 영역 분리
   width: 1024px;
@@ -36,9 +30,9 @@ const DescBox = styled.div` // flex로 수직과 수평 배치를 한번에 컨�
     margin: 10px 0 0 30px;
   }
   img { // descbox 내 flex-direction은 column인데 descBoxP1 태그 옆 이미지는 수평 배치해야 하는 상황. p태그 안에 이미지 넣기로 판단
-    width: 30px;
-    height: 30px;
-    margin-right: 10px;
+    width: 18px;
+    height: 18px;
+    margin-right: 5px;
   }
   @media screen and (max-width: 1024px) { // 1024px 밑으로 가도 설명이 보이도록 반응형 쿼리 작성
     width: 100vw;
@@ -54,14 +48,24 @@ const DivBox = styled.div` // 카드를 담을 플렉스박스
   align-self: center;
   @media screen and (max-width: 1024px) {
     width: 100vw;
+    justify-content: space-evenly;
   }
 `;
 const Card = styled.div`
   width: 220px;
-  height: 100%;
+  height: 98%;
+  align-self: flex-end;
   background: rgb(193, 159, 138);
   border-radius: 10px;
   cursor: pointer;
+  &:hover {
+    transform: translate(0, -5px);
+  }
+  @media screen and (max-width: 1024px) {
+    &:nth-child(4) {
+      display: none;
+    }
+  }
 `;
 const Main = () => {
     
@@ -69,10 +73,9 @@ const Main = () => {
   return (
     <Container>
       <HeaderDesign/>
-      {/* <Tmp><p>배너 영역입니다.</p></Tmp> */}
       <Banner/>
       <DescBox>
-        <p className="descBoxP1"><img src="" alt="이미지"/>어버이날 선물 고민</p>
+        <p className="descBoxP1"><img src={DescBoxIcon1} alt="이미지"/>어버이날 선물 고민</p>
         <p className="descBoxP2">이 술은 어때요?</p>
       </DescBox>
       <DivBox>
@@ -82,7 +85,7 @@ const Main = () => {
         <Card className="card"></Card>
       </DivBox>
       <DescBox>
-        <p className="descBoxP1"><img src="" alt="이미지"/>전통주에 흩날린 꽃내음</p>
+        <p className="descBoxP1"><img src={DescBoxIcon2} alt="이미지"/>전통주에 흩날린 꽃내음</p>
         <p className="descBoxP2">꽃놀이를 우리 술과 함께 즐겨요!</p>
       </DescBox>
       <DivBox className="divBox2">

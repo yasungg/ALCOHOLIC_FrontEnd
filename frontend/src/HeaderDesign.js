@@ -4,12 +4,11 @@ import axios from "axios";
 import searchIcon from './Image/메뉴버튼용 돋보기.png';
 import logo from './Image/logo.jpg';
 import { Link } from "react-router-dom";
-
 const HeaderDesign = () => {
   const Header = styled.div`
     box-sizing : border-box;
     width: 100%;
-    height: 23vh;
+    height: 180px;
     display: flex;
     flex-flow: column;
     @media screen and (max-width: 1024px) {
@@ -49,6 +48,9 @@ const HeaderDesign = () => {
       color: rgb(223, 214, 210);
       transition: all .5s;
     }
+    &:visited {
+      text-decoration: none;
+    }
   `;
   const LogoButton = styled.button`
     background: white;
@@ -83,7 +85,7 @@ const HeaderDesign = () => {
       caret-color: gray;
       &:focus {
         outline: none;
-        }
+      }
     }
     .searchBtn {
       display: flex;
@@ -109,7 +111,7 @@ const HeaderDesign = () => {
     width: 120px;
     height: 20px;
     align-self: flex-start;
-    margin-right: 100px;
+    margin-right: 50px;
   `;
   const UserButtons = styled.button`
     width: 60px;
@@ -124,14 +126,16 @@ const HeaderDesign = () => {
     
     &:hover {
       color: rgb(223, 214, 210);
-      transition: all 1s;
+      transition: all .5s;
+    }
+    &:visited {
+      text-decoration: none;
     }
   `;
-    
 return (
     <Header>
         <HeaderContainer>
-              <Link to='/'><LogoButton><Logo src={logo} alt="로고"></Logo></LogoButton></Link>
+              <LogoButton><Link to='/'><Logo src={logo} alt="로고"></Logo></Link></LogoButton>
             <SearchBox className="searchBox">
                 <input type="text" name="search" id="search"/>
                 <button className="searchBtn" type="submit">
@@ -144,7 +148,7 @@ return (
             </UserMenu>
         </HeaderContainer>
         <HeaderNavi>
-            <NaviButtons>홈</NaviButtons>
+            <Link to="/"><NaviButtons>홈</NaviButtons></Link>
             <NaviButtons>이달의 술</NaviButtons>
             <NaviButtons>술 추천</NaviButtons>
             <NaviButtons>이벤트</NaviButtons>
