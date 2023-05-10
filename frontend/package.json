@@ -10,6 +10,7 @@
     "dotenv": "^16.0.3",
     "firebase": "^9.21.0",
     "react": "^18.2.0",
+    "react-app": "^1.1.2",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.11.0",
     "react-scripts": "5.0.1",

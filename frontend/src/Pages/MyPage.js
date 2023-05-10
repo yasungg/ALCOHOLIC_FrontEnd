@@ -1,4 +1,4 @@
-import HeaderDesign from "../HeaderDesign"
+import HeaderDesign from "../HeaderDesign";
 import styled from "styled-components";
 import TMP from "../Image/벚꽃.png";
 import rightArrow from "../Image/angle-right.png";
@@ -15,7 +15,7 @@ const MyPageContainer = styled.div`
   align-self: center;
   display: flex;
   flex-direction: column;
-  
+
   @media screen and (max-width: 1024px) {
     width: 100vw;
   }
@@ -59,13 +59,13 @@ const ModifyBtn = styled.button`
   width: 75px;
   height: 20px;
   margin-left: 9px;
-  font-size: .7em;
+  font-size: 0.7em;
   background: white;
   border: none;
   box-shadow: none;
   cursor: pointer;
   &:hover {
-    transition: all .5s;
+    transition: all 0.5s;
     color: rgba(223, 214, 210);
   }
 `;
@@ -101,7 +101,7 @@ const BodyCard = styled.div`
   cursor: pointer;
   &:hover {
     transform: translate(0, -5px);
-    transition: all .5s;
+    transition: all 0.5s;
   }
   @media screen and (max-width: 1024px) {
     &:nth-child(4) {
@@ -154,13 +154,12 @@ const UpBtn = styled.button`
 `;
 
 const MyPage = () => {
-
   return (
     <Container>
-      <HeaderDesign/>
+      <HeaderDesign />
       <MyPageContainer>
         <UserCard>
-          <ProfilePicture src={TMP} alt="임시"/>
+          <ProfilePicture src={TMP} alt="임시" />
           <UserDesc>
             <p>순이둥이님 환영합니다.</p>
             <p>1998.10.25</p>
@@ -173,43 +172,49 @@ const MyPage = () => {
           <BodyTitle>리뷰 관리</BodyTitle>
           <BodyBox>
             <BodyCard>
-              <BodyImg src={TMP} alt="이미지"/>
+              <BodyImg src={TMP} alt="이미지" />
             </BodyCard>
             <BodyCard>
-              <BodyImg src={TMP} alt="이미지"/>
+              <BodyImg src={TMP} alt="이미지" />
             </BodyCard>
             <BodyCard>
-              <BodyImg src={TMP} alt="이미지"/>
+              <BodyImg src={TMP} alt="이미지" />
             </BodyCard>
             <BodyCard>
-              <BodyImg src={TMP} alt="이미지"/>
+              <BodyImg src={TMP} alt="이미지" />
             </BodyCard>
-            <BodyMoreBtn><img src={rightArrow} alt="ㅅ"/></BodyMoreBtn>
+            <BodyMoreBtn>
+              <img src={rightArrow} alt="ㅅ" />
+            </BodyMoreBtn>
           </BodyBox>
         </MyPageBody>
         <MyPageBody>
           <BodyTitle>관심 상품</BodyTitle>
           <BodyBox>
             <BodyCard>
-              <BodyImg src={TMP} alt="이미지"/>
+              <BodyImg src={TMP} alt="이미지" />
             </BodyCard>
             <BodyCard>
-              <BodyImg src={TMP} alt="이미지"/>
+              <BodyImg src={TMP} alt="이미지" />
             </BodyCard>
             <BodyCard>
-              <BodyImg src={TMP} alt="이미지"/>
+              <BodyImg src={TMP} alt="이미지" />
             </BodyCard>
             <BodyCard>
-              <BodyImg src={TMP} alt="이미지"/>
+              <BodyImg src={TMP} alt="이미지" />
             </BodyCard>
-            <BodyMoreBtn><img src={rightArrow} alt="ㅅ"/></BodyMoreBtn>
+            <BodyMoreBtn>
+              <img src={rightArrow} alt="ㅅ" />
+            </BodyMoreBtn>
           </BodyBox>
         </MyPageBody>
       </MyPageContainer>
       <FooterDiv>
-          <UpBtn><img src={upArrow} alt="ㅅ"/></UpBtn>
-        </FooterDiv>
+        <UpBtn>
+          <img src={upArrow} alt="ㅅ" />
+        </UpBtn>
+      </FooterDiv>
     </Container>
   );
-}
+};
 export default MyPage;
