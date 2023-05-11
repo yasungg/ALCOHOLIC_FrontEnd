@@ -40,14 +40,14 @@ const DescBox = styled.div`
   }
   @media screen and (max-width: 1024px) {
     // 1024px 밑으로 가도 설명이 보이도록 반응형 쿼리 작성
-    width: 100vw;
+    width: 100%;
+    padding-left: 15px;
   }
 `;
 const DivBox = styled.div`
   // 카드를 담을 플렉스박스
   width: 1024px; // 반응형 웹을 고려해 1024px로 설정.
   height: 350px;
-  overflow: hidden; // flex-flow에 rap 요소를 추가해 반응형 미디어쿼리에서 width가 줄어들 경우 box 단위로 사라지도록 설정.
   display: flex;
   flex-flow: row wrap;
   justify-content: space-between;
@@ -86,9 +86,11 @@ const Main = () => {
       <DescBox>
         <p className="descBoxP1">
           <img src={DescBoxIcon1} alt="이미지" />
-          어버이날 선물 고민
+          <span>어버이날 선물 고민</span>
         </p>
-        <p className="descBoxP2">이 술은 어때요?</p>
+        <p className="descBoxP2">
+          <span>이 술은 어때요?</span>
+        </p>
       </DescBox>
       <DivBox>
         <Card className="card"></Card>
@@ -99,9 +101,11 @@ const Main = () => {
       <DescBox>
         <p className="descBoxP1">
           <img src={DescBoxIcon2} alt="이미지" />
-          전통주에 흩날린 꽃내음
+          <span>전통주에 흩날린 꽃내음</span>
         </p>
-        <p className="descBoxP2">꽃놀이를 우리 술과 함께 즐겨요!</p>
+        <p className="descBoxP2">
+          <span>꽃놀이를 우리 술과 함께 즐겨요!</span>
+        </p>
       </DescBox>
       <DivBox className="divBox2">
         <Card className="card"></Card>

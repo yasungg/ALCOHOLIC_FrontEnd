@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import { storage } from '../api/firebase';
+import React, { useState } from "react";
+import { storage } from "../APIs/firebase";
 
 const UploadImage = () => {
   const [file, setFile] = useState(null);
-  const [url, setUrl] = useState('');
+  const [url, setUrl] = useState("");
 
   const handleFileInputChange = (e) => {
     setFile(e.target.files[0]);
@@ -13,7 +13,7 @@ const UploadImage = () => {
     const storageRef = storage.ref();
     const fileRef = storageRef.child(file.name);
     fileRef.put(file).then(() => {
-      console.log('File uploaded successfully!');
+      console.log("File uploaded successfully!");
       fileRef.getDownloadURL().then((url) => {
         console.log("저장경로 확인 : " + url);
         setUrl(url);
@@ -28,6 +28,6 @@ const UploadImage = () => {
       {url && <img src={url} alt="uploaded" />}
     </div>
   );
-}
+};
 
 export default UploadImage;

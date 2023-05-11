@@ -7,19 +7,17 @@ const Banner = () => {
   const settings = {
     dots: true,
     infinite: true,
-    arrows: false,
+    arrows: true,
     speed: 300,
     autoplay: true,
     autoplaySpeed: 5000,
     slidesToShow: 1,
     slidesToScroll: 1,
     centerMode: true,
-    centerPadding: '0px',
-    pauseOnHover : true
+    centerPadding: "0px",
+    pauseOnHover: true,
   };
-  const BannerContainer = styled.div`
-
-  `;
+  const BannerContainer = styled.div``;
   const StyledSlider = styled(Slider)`
     .slick-list {
       width: 100%;
@@ -31,6 +29,18 @@ const Banner = () => {
       outline: none;
       width: 100%;
     }
+    .slick-prev {
+      position: absolute;
+      top: 50%;
+      z-index: 9;
+      left: 45px;
+    }
+    .slick-next {
+      position: absolute;
+      top: 50%;
+      z-index: 9;
+      right: 45px;
+    }
   `;
   const CardBox = styled.div`
     cursor: pointer;
@@ -38,15 +48,25 @@ const Banner = () => {
   const CardImg = styled.img`
     width: 100%;
     height: 100%;
-  `;  
+  `;
   return (
     <BannerContainer>
       <StyledSlider {...settings}>
-        <div><h3>배너1</h3></div>
-        <div><h3>배너2</h3></div>
-        <div><h3>배너3</h3></div>
-        <div><h3>배너4</h3></div>
-        <div><h3>배너5</h3></div>
+        <div>
+          <h3>배너1</h3>
+        </div>
+        <div>
+          <h3>배너2</h3>
+        </div>
+        <div>
+          <h3>배너3</h3>
+        </div>
+        <div>
+          <h3>배너4</h3>
+        </div>
+        <div>
+          <h3>배너5</h3>
+        </div>
         {/* {sliders.map(({name, image}) => {
           return (
             <CardBox>
@@ -57,5 +77,5 @@ const Banner = () => {
       </StyledSlider>
     </BannerContainer>
   );
-}
+};
 export default Banner;
