@@ -72,6 +72,11 @@ const Card = styled.div`
       display: none;
     }
   }
+  @media screen and (max-width: 768px) {
+    &:nth-child(3) {
+      display: none;
+    }
+  }
 `;
 const Main = () => {
   return (

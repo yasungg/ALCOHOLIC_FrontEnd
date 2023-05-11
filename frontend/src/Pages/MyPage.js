@@ -56,9 +56,8 @@ const UserDesc = styled.div`
   }
 `;
 const ModifyBtn = styled.button`
-  width: 75px;
+  width: 100px;
   height: 20px;
-  margin-left: 9px;
   font-size: 0.7em;
   background: white;
   border: none;
@@ -167,7 +166,9 @@ const MyPage = () => {
             <p>술 취향</p>
           </UserDesc>
         </UserCard>
-        <ModifyBtn>회원정보 수정</ModifyBtn>
+        <ModifyBtn>
+          <span>회원정보 수정</span>
+        </ModifyBtn>
         <MyPageBody>
           <BodyTitle>리뷰 관리</BodyTitle>
           <BodyBox>
