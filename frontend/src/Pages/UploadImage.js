@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import { storage } from "../APIs/firebase";
-
-const UploadImage = () => {
+import { storage } from "../api/firebase";
+const ImageUploader = () => {
   const [file, setFile] = useState(null);
   const [url, setUrl] = useState("");
 
@@ -30,4 +29,4 @@ const UploadImage = () => {
   );
 };
 
-export default UploadImage;
+export default ImageUploader;

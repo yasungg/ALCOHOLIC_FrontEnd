@@ -3,10 +3,15 @@ import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import searchIcon from "./Image/메뉴버튼용 돋보기.png";
 import logo from "./Image/logo.jpg";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 const HeaderDesign = () => {
+  const navigate = useNavigate();
   const Header = styled.div`
     box-sizing: border-box;
+    position: sticky;
+    top: 0;
+    background: white;
+    z-index: 10;
     width: 100%;
     height: 180px;
     display: flex;
@@ -57,17 +62,13 @@ const HeaderDesign = () => {
     border: none;
     cursor: pointer;
     margin: 8px 0 5px 20px;
-    /* &:active {
-      border: none;
-    } */
   `;
   const Logo = styled.img`
-    background: rgba(223, 214, 210);
+    background: rgb(223, 214, 210);
     width: 100px;
     height: 100px;
     border-radius: 50%;
     align-self: flex-start;
-    /* margin: auto 20px; */
   `;
   const SearchBox = styled.div`
     width: 400px;
@@ -147,17 +148,29 @@ const HeaderDesign = () => {
           </button>
         </SearchBox>
         <UserMenu className="userMenu">
-          <UserButtons className="signUp">회원가입</UserButtons>
-          <UserButtons>로그인</UserButtons>
+          <UserButtons className="signUp" onClick={() => navigate("/SignUp")}>
+            <span>회원가입</span>
+          </UserButtons>
+          <UserButtons onClick={() => navigate("/Login")}>
+            <span>로그인</span>
+          </UserButtons>
         </UserMenu>
       </HeaderContainer>
       <HeaderNavi>
         <Link to="/">
-          <NaviButtons>홈</NaviButtons>
+          <NaviButtons>
+            <span>홈</span>
+          </NaviButtons>
         </Link>
-        <NaviButtons>이달의 술</NaviButtons>
-        <NaviButtons>술 추천</NaviButtons>
-        <NaviButtons>이벤트</NaviButtons>
+        <NaviButtons>
+          <span>이달의 술</span>
+        </NaviButtons>
+        <NaviButtons>
+          <span>술 추천</span>
+        </NaviButtons>
+        <NaviButtons onClick={() => navigate("/Event")}>
+          <span>이벤트</span>
+        </NaviButtons>
       </HeaderNavi>
     </Header>
   );

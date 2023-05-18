@@ -2,7 +2,7 @@ import HeaderDesign from "../HeaderDesign";
 import styled from "styled-components";
 import TMP from "../Image/벚꽃.png";
 import rightArrow from "../Image/angle-right.png";
-import upArrow from "../Image/angle-up.png";
+import { UpBtn } from "../component/ReusableComponents";
 
 const Container = styled.div`
   width: 100%;
@@ -15,7 +15,6 @@ const MyPageContainer = styled.div`
   align-self: center;
   display: flex;
   flex-direction: column;
-
   @media screen and (max-width: 1024px) {
     width: 100vw;
   }
@@ -139,18 +138,6 @@ const FooterDiv = styled.div`
   justify-content: center;
   align-items: center;
 `;
-const UpBtn = styled.button`
-  box-sizing: border-box;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-  background: rgba(223, 214, 210);
-  border-radius: 50%;
-  border: 1px solid rgba(223, 214, 210);
-  cursor: pointer;
-`;
 
 const MyPage = () => {
   return (
@@ -211,9 +198,7 @@ const MyPage = () => {
         </MyPageBody>
       </MyPageContainer>
       <FooterDiv>
-        <UpBtn>
-          <img src={upArrow} alt="ㅅ" />
-        </UpBtn>
+        <UpBtn />
       </FooterDiv>
     </Container>
   );

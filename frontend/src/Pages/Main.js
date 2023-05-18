@@ -3,13 +3,15 @@ import FooterDesign from "../FooterDesign";
 import Banner from "../Banner";
 import styled from "styled-components";
 import React, { useState, useEffect, useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import DescBoxIcon1 from "../Image/부모님.png";
 import DescBoxIcon2 from "../Image/벚꽃.png";
+import { UpBtn } from "../component/ReusableComponents";
 
 const Container = styled.div`
   // 전체 영역을 설정 flexbox로 배치할 때 기준이 필요할 것이라 생각했기 때문
   box-sizing: border-box;
+  position: relative;
   width: 100%;
   height: 100%;
   display: flex;
@@ -78,7 +80,15 @@ const Card = styled.div`
     }
   }
 `;
+const DownBlanc = styled.div`
+  display: flex;
+  width: 100%;
+  height: 160px;
+  justify-content: center;
+  align-items: center;
+`;
 const Main = () => {
+  const navigate = useNavigate();
   return (
     <Container>
       <HeaderDesign />
@@ -86,11 +96,9 @@ const Main = () => {
       <DescBox>
         <p className="descBoxP1">
           <img src={DescBoxIcon1} alt="이미지" />
-          <span>어버이날 선물 고민</span>
+          어버이날 선물 고민
         </p>
-        <p className="descBoxP2">
-          <span>이 술은 어때요?</span>
-        </p>
+        <p className="descBoxP2">이 술은 어때요?</p>
       </DescBox>
       <DivBox>
         <Card className="card"></Card>
@@ -101,11 +109,9 @@ const Main = () => {
       <DescBox>
         <p className="descBoxP1">
           <img src={DescBoxIcon2} alt="이미지" />
-          <span>전통주에 흩날린 꽃내음</span>
+          전통주에 흩날린 꽃내음
         </p>
-        <p className="descBoxP2">
-          <span>꽃놀이를 우리 술과 함께 즐겨요!</span>
-        </p>
+        <p className="descBoxP2">꽃놀이를 우리 술과 함께 즐겨요!</p>
       </DescBox>
       <DivBox className="divBox2">
         <Card className="card"></Card>
@@ -113,6 +119,9 @@ const Main = () => {
         <Card className="card"></Card>
         <Card className="card"></Card>
       </DivBox>
+      <DownBlanc>
+        <UpBtn />
+      </DownBlanc>
       <FooterDesign />
     </Container>
   );
