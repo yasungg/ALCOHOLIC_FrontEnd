@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useState }from "react";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import AxiosApi from "../api/AxiosApi";
 import { KAKAO_AUTH_URL } from "../component/OAuth";
 import KaKaoLogin from "../component/KaKaoLogin";
-import KakaoIcon from "../Image/KakaoIcon.png";
+
 
 const Container = styled.div`
   display: flex;
@@ -108,79 +108,70 @@ const Find = styled.div`
     color: rgba(223, 214, 210);
   }
 `;
+    const Login = () => {
+    const navigate = useNavigate(); 
+    // 키보드 입력 받기
+    const [inputId, setInputId] = useState("");
+    const [inputPw, setInputPw] = useState("");
 
-const Login = () => {
-  // 키보드 입력 받기
-  const [inputId, setInputId] = useState("");
-  const [inputPw, setInputPw] = useState("");
+    // 유효성 검사
+    const [isId, setIsId] = useState(false);
+    const [isPw, setIsPw] = useState(false);
 
-  // 유효성 검사
-  const [isId, setIsId] = useState(false);
-  const [isPw, setIsPw] = useState(false);
 
-  const onChangeId = (e) => {
-    setInputId(e.target.value);
-    setIsId(true);
-  };
-  const onChangePw = (e) => {
-    setInputPw(e.target.value);
-    setIsPw(true);
-  };
-  const onClickLogin = async () => {
-    // 로그인을 위해 axios 호출
-    const response = await AxiosApi.memberLogin(inputId, inputPw);
-    console.log(response.data);
-    if (response.data === true) {
-      console.log("로그인 성공");
-    } else {
-      console.log("로그인 에러");
+    const onChangeId = e => {
+        setInputId(e.target.value);
+        setIsId(true);
     }
-  };
+    const onChangePw = (e) => {
+        setInputPw(e.target.value);
+        setIsPw(true);
+    }
+    const onClickLogin = async() => {
+        // 로그인을 위해 axios 호출
+        const response = await AxiosApi.memberLogin(inputId, inputPw);
+        console.log(response.data);
+        if(response.data === true) {
+           console.log("로그인 성공");
+        } else {
+            console.log("로그인 에러");
+        }
+  }
 
-  return (
-    <Container>
-      <div className="Login">
-        <span>로그인</span>
-      </div>
-      <div className="item">
-        <Input
-          type="text"
-          placeholder="아이디를 입력해주세요"
-          value={inputId}
-          onChange={onChangeId}
-        />
-        <Input
-          type="password"
-          placeholder="비밀번호를 입력해주세요"
-          value={inputPw}
-          onChange={onChangePw}
-        />
-      </div>
 
-      <Find>
-        <Link to="/FindId">
-          <button className="findbutton">아이디 찾기</button>
-        </Link>
-        <Link to="/FindPw">
-          <button className="findbutton">비밀번호 찾기</button>
-        </Link>
-      </Find>
-      <div className="item2">
-        {isId && isPw ? (
-          <button className="login-enable-button" onClick={onClickLogin}>
-            로그인
-          </button>
-        ) : (
-          <button className="login-disable-button">로그인</button>
-        )}
-      </div>
-      <div className="item2">
-        <Link to="/SignUp">
-          <button className="signbutton">회원가입</button>
-        </Link>
-        <KaKaoLogin />
-      </div>
-    </Container>
-  );
-};
-export default Login;
+
+
+  
+    
+
+
+    return (
+        <Container>
+          <div className="Login">
+            <span>로그인</span>
+          </div>
+          <div className="item">
+            <Input type="text" placeholder="아이디를 입력해주세요" value={inputId} onChange={onChangeId}/>
+            <Input type="password" placeholder="비밀번호를 입력해주세요" value={inputPw} onChange={onChangePw}/>
+          </div>
+
+          <Find>
+            <button className="findbutton" onClick={()=> navigate("/FindId")}>아이디 찾기</button>
+
+            <button className="findbutton"onClick={()=> navigate("/FindPw")}>비밀번호 찾기</button>
+            
+          </Find>
+          <div className="item2">
+          {(isId && isPw) ?
+                <button className="login-enable-button" onClick={onClickLogin}>로그인</button>  :
+                <button className="login-disable-button" >로그인</button>}
+          </div>
+          <div className="item2">
+            <button className="signbutton" onClick={()=> navigate("/SignUp")}>회원가입</button>
+            <KaKaoLogin/>
+          </div>
+
+        </Container>
+      );
+    };
+    export default Login;

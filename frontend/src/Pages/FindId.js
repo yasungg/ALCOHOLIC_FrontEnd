@@ -1,16 +1,16 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import HeaderDesign from "../HeaderDesign";
 import AxiosApi from "../api/AxiosApi";
 import Modal from "../utils/Modal";
 
+
 const Container = styled.div`
   display: flex;
-  flex-wrap: wrap;
   flex-direction: column;
+  flex-wrap: wrap;
   justify-content: space-evenly;
   width: 100%;
-  height: 550px;
+  height: 100%;
 
 .findid {
     display: flex;
@@ -94,7 +94,6 @@ const FindId = () => {
 
     return (
         <Container>
-            <HeaderDesign/>
             <div className="findid">
                 <span>아이디 찾기</span>
             </div>
@@ -106,7 +105,6 @@ const FindId = () => {
             <button onClick={onClickIdInfo} className="idfindbutton">확인</button>
             <Modal open={modalOpen} type={true} confirm={confirmBtn} close={closeModal} header="아이디 찾기">{modalText}</Modal>
           </Find>
-          
         </Container>
 
     );

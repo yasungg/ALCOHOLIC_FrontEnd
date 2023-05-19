@@ -2,8 +2,29 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import styled from "styled-components";
+import { useState, useEffect } from "react";
+import firebase from "firebase/compat/app";
+import { getStorage, ref, getDownloadURL } from "firebase/storage";
 
 const Banner = () => {
+  const [imageUrls, setImageUrls] = useState([]);
+
+  useEffect(() => {
+    const storage = getStorage(firebase.app());
+    const storageRef = ref(storage, "images");
+
+    Promise.all([
+      getDownloadURL(ref(storageRef, "Banner1.png")),
+      getDownloadURL(ref(storageRef, "Banner2.png")),
+      getDownloadURL(ref(storageRef, "main_bnr.jpg")),
+    ])
+      .then((urls) => {
+        setImageUrls(urls);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
   const settings = {
     dots: true,
     infinite: true,
@@ -22,7 +43,6 @@ const Banner = () => {
     .slick-list {
       width: 100%;
       height: 300px;
-      background: rgba(223, 214, 210);
       text-align: center;
     }
     .slick-slide div {
@@ -52,28 +72,11 @@ const Banner = () => {
   return (
     <BannerContainer>
       <StyledSlider {...settings}>
-        <div>
-          <h3>배너1</h3>
-        </div>
-        <div>
-          <h3>배너2</h3>
-        </div>
-        <div>
-          <h3>배너3</h3>
-        </div>
-        <div>
-          <h3>배너4</h3>
-        </div>
-        <div>
-          <h3>배너5</h3>
-        </div>
-        {/* {sliders.map(({name, image}) => {
-          return (
-            <CardBox>
-              <CardImg src="{image}} alt=""/>
-            </CardBox>
-          );
-        })} */}
+        {imageUrls.map((url) => (
+          <CardBox key={url}>
+            <CardImg src={url} alt="Banner" />
+          </CardBox>
+        ))}
       </StyledSlider>
     </BannerContainer>
   );

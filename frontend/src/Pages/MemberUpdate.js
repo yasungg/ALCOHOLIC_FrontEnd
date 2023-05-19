@@ -1,6 +1,6 @@
 import React, { useState }from "react";
 import styled from "styled-components";
-import HeaderDesign from "../HeaderDesign";
+import AxiosApi from "../api/AxiosApi";
 
 const Container = styled.div`
   display: flex;
@@ -86,6 +86,7 @@ const Container = styled.div`
 
 const MemberUpdate = () => {
     // 키보드 입력
+    const [existPw, setExistPw] = useState("");
     const [inputPw, setInputPw] = useState("");
     const [inputConPw, setInputConPw] = useState("");
     const [inputName, setInputName] = useState("");
@@ -94,7 +95,6 @@ const MemberUpdate = () => {
     const [inputPhone, setInputPhone] = useState("")
 
     // 오류 메시지
-    // const [idMessage, setIdMessage] = useState("");
     const [pwMessage, setPwMessage] = useState("");
     const [conPwMessage, setConPwMessage] = useState("");
     
@@ -107,6 +107,10 @@ const MemberUpdate = () => {
     const [isPhone, setIsPhone] = useState(false);
 
 
+
+    const onChangeExistPw = (e) => {
+        setExistPw(e.target.value);
+    }
     const onChangePw = (e) => {
         const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()_+~`|}{[\]\\:';"<>?,./])[A-Za-z\d!@#$%^&*()_+~`|}{[\]\\:';"<>?,./]{8,}$/
         const passwordCurrent = e.target.value ;
@@ -147,15 +151,28 @@ const MemberUpdate = () => {
         setIsPhone(true);
     }
 
+    const onClickUpdate = async() => {
+        const response = await AxiosApi.MemberUpdate(existPw, inputPw, inputName, inputJumin, inputEmail, inputPhone)
+        console.log(response.data)
+        if(response.data === true) {
+            console.log("회원수정 성공")
+        } else {
+            console.log("회원수정 실패")
+        }
+    }
+
     return (
         <Container>
-            <HeaderDesign/>
           <div className="sign">
             <span>회원 정보 수정</span>
           </div>
           <hr className="hr"/>
         <div className="item">
-            <label className="label" for = "password">비밀번호</label>
+            <label className="label" for = "password">기존 비밀번호</label>
+            <input className="input" type="password" placeholder="기존 비밀번호를 입력해주세요" value ={existPw} onChange={onChangeExistPw}/>
+        </div>
+        <div className="item">
+            <label className="label" for = "password">새 비밀번호</label>
             <input className="input" type="password" placeholder="숫자+영문자+특수문자 조합으로 8자리 이상 입력해주세요" value ={inputPw} onChange={onChangePw}/>
         </div>
         <div className="hint">
@@ -189,7 +206,7 @@ const MemberUpdate = () => {
         <hr className="hr"/>
         <div className="item">
             {(isPw && isConPw && isName && isJumin && isMail && isPhone) ? 
-            <button className="enable-button" >회원정보수정</button> :
+            <button className="enable-button" onClick={onClickUpdate} >회원정보수정</button> :
             <button className="disable-button">회원정보수정</button>}
         </div>
         </Container>

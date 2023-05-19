@@ -3,6 +3,7 @@ import styled from "styled-components";
 import TMP from "../Image/벚꽃.png";
 import rightArrow from "../Image/angle-right.png";
 import { UpBtn } from "../component/ReusableComponents";
+import { useNavigate } from "react-router-dom";
 
 const Container = styled.div`
   width: 100%;
@@ -140,12 +141,17 @@ const FooterDiv = styled.div`
 `;
 
 const MyPage = () => {
+  const navigate = useNavigate();
   return (
     <Container>
       <HeaderDesign />
       <MyPageContainer>
         <UserCard>
-          <ProfilePicture src={TMP} alt="임시" />
+          <ProfilePicture
+            src={TMP}
+            alt="임시"
+            onClick={() => navigate("/SBTIMain")}
+          />
           <UserDesc>
             <p>순이둥이님 환영합니다.</p>
             <p>1998.10.25</p>
@@ -153,7 +159,7 @@ const MyPage = () => {
             <p>술 취향</p>
           </UserDesc>
         </UserCard>
-        <ModifyBtn>
+        <ModifyBtn onClick={() => navigate("/MemberUpdate")}>
           <span>회원정보 수정</span>
         </ModifyBtn>
         <MyPageBody>

@@ -4,6 +4,8 @@ import Banner from "../Banner";
 import styled from "styled-components";
 import React, { useState, useEffect, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import firebase from "firebase/compat/app";
+import { getStorage, ref, getDownloadURL } from "firebase/storage";
 import DescBoxIcon1 from "../Image/부모님.png";
 import DescBoxIcon2 from "../Image/벚꽃.png";
 import { UpBtn } from "../component/ReusableComponents";
@@ -88,6 +90,8 @@ const DownBlanc = styled.div`
   align-items: center;
 `;
 const Main = () => {
+  const storage = getStorage(firebase.app());
+  const storageRef = ref(storage, "Icons");
   const navigate = useNavigate();
   return (
     <Container>

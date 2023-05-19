@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import HeaderDesign from "../HeaderDesign";
 import AxiosApi from "../api/AxiosApi";
 import Modal from "../utils/Modal";
 
@@ -10,7 +9,7 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: space-evenly;
   width: 100%;
-  height: 550px;
+  height: 100%;
 
 .findpw {
     display: flex;
@@ -96,7 +95,6 @@ const FindPw = () => {
 
     return (
         <Container>
-            <HeaderDesign/>
         <div className="findpw">
             <span>비밀번호 찾기</span>
         </div>
