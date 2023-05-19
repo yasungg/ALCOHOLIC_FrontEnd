@@ -89,10 +89,10 @@ const Container = styled.div`
       outline: 0;
     }
 
-    border-color: brown;
+    border-color: rgb(193, 159, 138);
     // border: 0;
     border-radius: 0;
-    color: brown;
+    color: rgb(193, 159, 138);
     position: relative;
     overflow: hidden;
     z-index: 1;
@@ -107,7 +107,7 @@ const Container = styled.div`
       transform: translateX(-50%);
       width: 0;
       height: 100%;
-      background: brown;
+      background: rgb(193, 159, 138);
       z-index: -1;
       transition: width 150ms ease-in-out;
     }

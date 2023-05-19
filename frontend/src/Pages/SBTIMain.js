@@ -2,112 +2,76 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import AxiosApi from "../api/AxiosApi";
-import Hmm from "../Image/hmm.png";
-import X from "../Image/x.png";
+import firebase from "firebase/compat/app";
+import { getStorage, ref, getDownloadURL } from "firebase/storage";
 
 const OutBox = styled.div`
-  padding-bottom: 100px;
   display: flex;
   flex-wrap: wrap;
   flex-direction: column;
   justify-content: space-evenly;
   align-items: center;
-  background-color: beige;
 `;
-
-const Underline = styled.div`
-  width: 480px;
-  height: 10px;
-  border-bottom: 1px solid black;
+const Top = styled.div`
+  box-sizing: border-box;
+  display: flex;
+  width: 399px;
+  height: 50px;
+  justify-content: space-between;
+  align-items: center;
+  color: white;
+  background: rgb(193, 159, 138);
+  border-radius: 5px;
 `;
-
+const Xbox = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50px;
+  height: 50px;
+  float: right;
+`;
 const Container = styled.div`
-  width: 480px;
-  height: 600px;
-  border: 1px solid black;
+  box-sizing: border-box;
+  width: 400px;
+  height: 550px;
+  border: 1px solid rgb(193, 159, 138);
+  border-radius: 5px;
   background-color: white;
   margin-top: 5%;
   display: flex;
   flex-wrap: wrap;
   flex-direction: column;
-  justify-content: space-evenly;
+  justify-content: space-between;
   align-items: center;
-  padding-bottom: 50px;
-
   .imo {
     width: 16em;
-    /* border-radius: 50%; */
+    border-radius: 50%;
   }
 
   .close {
-    width: 15px;
-    margin-left: auto;
-    margin-right: 10px;
-    margin-top: 10px;
+    width: 20px;
+    height: 20px;
     cursor: pointer;
   }
 
   .content1 {
-    margin-top: -13px;
-    text-align: center;
-    margin-bottom: 0px;
+    margin: 0;
   }
 
   .box {
-    box-sizing: border-box;
-    appearance: none;
-    background-color: transparent;
-    border: 2px solid black;
-    border-radius: 0.6em;
-    color: black;
-    cursor: pointer;
-    display: flex;
+    width: 200px;
+    height: 50px;
     align-self: center;
-    font-size: 1rem;
-    font-weight: 400;
-    line-height: 1;
-    margin: 20px;
-    padding: 1.2em 2.8em;
-    text-decoration: none;
-    text-align: center;
-    text-transform: uppercase;
-    font-family: "Montserrat", sans-serif;
-    font-weight: 700;
-
-    &:hover,
-    &:focus {
-      color: brown;
-      outline: 0;
-    }
-
-    border-color: brown;
-    // border: 0;
-    border-radius: 0;
-    color: brown;
-    position: relative;
-    overflow: hidden;
-    z-index: 1;
-    transition: color 150ms ease-in-out;
-
-    &:after {
-      content: "";
-      position: absolute;
-      display: block;
-      top: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 0;
-      height: 100%;
-      background: brown;
-      z-index: -1;
-      transition: width 150ms ease-in-out;
-    }
-
+    margin-bottom: 32px;
+    border: 1px solid rgb(193, 159, 138);
+    color: rgb(193, 159, 138);
+    background: white;
     &:hover {
-      color: #fff;
-      &:after {
-        width: 110%;
-      }
+      transform: translateY(-3px);
+      transition: all 1s;
+      background: rgb(193, 159, 138);
+      color: white;
     }
   }
 `;
@@ -116,7 +80,7 @@ const SBTIMain = () => {
   const navigate = useNavigate();
 
   const [userInfo, setUserInfo] = useState([]);
-
+  const [imageUrls, setImageUrls] = useState([]);
   // localStorage를 이용하여 SBTI 문항에 대한 답변 기록 저장
   localStorage.setItem("takju", 0);
   localStorage.setItem("chungju", 0);
@@ -134,29 +98,48 @@ const SBTIMain = () => {
     };
     userInfo();
   }, []);
+  useEffect(() => {
+    const storage = getStorage(firebase.app());
+    const storageIconRef = ref(storage, "Icons");
+
+    Promise.all([
+      getDownloadURL(ref(storageIconRef, "x.png")),
+      getDownloadURL(ref(storageIconRef, "logo.jpg")),
+    ])
+      .then((urls) => {
+        setImageUrls(urls);
+        console.log(imageUrls);
+      })
+      .catch((error) => {
+        console.error("아이콘 이미지 로딩 실패!!", error);
+      });
+  }, []);
 
   return (
     <OutBox>
       <Container>
-        <img
-          className="close"
-          src={X}
-          alt="x"
-          onClick={() => {
-            navigate("/");
-          }}
-        />
-        <div className="top">
-          <p className="content1">술BTI 검사</p>
-        </div>
-        <Underline />
-        <div style={{ marginBottom: "20px" }}>
+        <Top>
+          <span className="content1" style={{ marginLeft: "165px" }}>
+            술BTI 검사
+          </span>
+          <Xbox>
+            <img
+              className="close"
+              src={imageUrls[0]}
+              alt="x"
+              onClick={() => {
+                navigate("/");
+              }}
+            />
+          </Xbox>
+        </Top>
+        <div>
           <p>1분만에 분석해드려요!</p>
         </div>
         <div>
-          <img className="imo" src={Hmm} alt="이모티콘" />
+          <img className="imo" src={imageUrls[1]} alt="이모티콘" />
         </div>
-        <div style={{ marginTop: "60px" }}>
+        <div>
           {userInfo.map((user) => (
             <div key={user.user_no}>
               <p>
@@ -167,7 +150,7 @@ const SBTIMain = () => {
         </div>
         <div>
           <button className="box" onClick={onClickSBTI}>
-            SBTI 시작하기
+            <span>SBTI 시작하기</span>
           </button>
         </div>
       </Container>
