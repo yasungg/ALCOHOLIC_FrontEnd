@@ -90,16 +90,32 @@ const DownBlanc = styled.div`
   align-items: center;
 `;
 const Main = () => {
-  const storage = getStorage(firebase.app());
-  const storageRef = ref(storage, "Icons");
+  const [iconUrls, setIconUrls] = useState([]);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // 파이어베이스를 이용한 홈페이지 아이콘 렌더링
+    const storage = getStorage(firebase.app());
+    const storageIconRef = ref(storage, "Icons");
+
+    Promise.all([
+      getDownloadURL(ref(storageIconRef, "부모님.png")), // 어버이날 이미지
+      getDownloadURL(ref(storageIconRef, "벚꽃.png")), // 벚꽃 이미지
+    ])
+      .then((urls) => {
+        setIconUrls(urls);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
   return (
     <Container>
       <HeaderDesign />
       <Banner />
       <DescBox>
         <p className="descBoxP1">
-          <img src={DescBoxIcon1} alt="이미지" />
+          <img src={iconUrls[0]} alt="이미지" />
           어버이날 선물 고민
         </p>
         <p className="descBoxP2">이 술은 어때요?</p>
@@ -112,7 +128,7 @@ const Main = () => {
       </DivBox>
       <DescBox>
         <p className="descBoxP1">
-          <img src={DescBoxIcon2} alt="이미지" />
+          <img src={iconUrls[1]} alt="이미지" />
           전통주에 흩날린 꽃내음
         </p>
         <p className="descBoxP2">꽃놀이를 우리 술과 함께 즐겨요!</p>

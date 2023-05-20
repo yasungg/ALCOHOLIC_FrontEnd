@@ -1,105 +1,136 @@
 import styled from "styled-components";
-
-const FooterDesign = () => {
-  const FooterContainer = styled.div`
-    display: flex;
+import { useState, useEffect } from "react";
+import firebase from "firebase/compat/app";
+import { getStorage, ref, getDownloadURL } from "firebase/storage";
+const FooterContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 200px;
+  border-top: 1px solid rgb(223, 214, 210);
+  @media screen and (max-width: 1024px) {
+    height: 350px;
+  }
+`;
+const UpperBox = styled.div`
+  width: 80%;
+  height: 70px;
+  margin: 25px 20px 10px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-self: center;
+  @media screen and (max-width: 1024px) {
+    width: 95%;
+    margin: 10px 20px 10px 20px;
     flex-direction: column;
-    width: 100%;
-    height: 200px;
-    border-top: 1px solid rgb(223, 214, 210);
-    @media screen and (max-width: 1024px) {
-      height: 350px;
-    }
-  `;
-  const UpperBox = styled.div`
-    width: 80%;
-    height: 70px;
-    margin: 25px 20px 10px 20px;
-    display: flex;
-    justify-content: space-between;
+    justify-content: space-evenly;
+    align-items: center;
+    height: 70%;
+  }
+`;
+const NameBox = styled.div`
+  width: 250px;
+  height: 70px;
+  display: flex;
+  flex-direction: column;
+  .firstLine {
+    font-size: 1.3em;
+    margin: 0;
+  }
+  .secondLine {
+    font-size: 0.7em;
+    margin-top: 5px;
+  }
+  .thirdLine {
+    font-size: 0.6em;
+    margin: 0;
+  }
+`;
+const FooterButtonBox = styled.div`
+  display: flex;
+  width: 400px;
+  justify-content: space-between;
+  align-self: flex-start;
+  @media screen and (max-width: 1024px) {
     align-self: center;
-    @media screen and (max-width: 1024px) {
-      width: 95%;
-      margin: 10px 20px 10px 20px;
-      flex-direction: column;
-      justify-content: space-evenly;
-      align-items: center;
-      height: 70%;
-    }
-  `;
-  const NameBox = styled.div`
-    width: 250px;
-    height: 70px;
-    display: flex;
-    flex-direction: column;
-    .firstLine {
-      font-size: 1.3em;
-      margin: 0;
-    }
-    .secondLine {
-      font-size: 0.7em;
-      margin-top: 5px;
-    }
-    .thirdLine {
-      font-size: 0.6em;
-      margin: 0;
-    }
-  `;
-  const FooterButtonBox = styled.div`
-    display: flex;
-    width: 400px;
-    justify-content: space-between;
-    align-self: flex-start;
-    @media screen and (max-width: 1024px) {
-      align-self: center;
-    }
-  `;
-  const FooterButton = styled.button`
-    width: 150px;
-    border: none;
-    background: none;
-    font-weight: bold;
+  }
+`;
+const FooterButton = styled.button`
+  width: 150px;
+  border: none;
+  background: none;
+  font-weight: bold;
+  cursor: pointer;
+  &:nth-child(1) {
+    border-right: 1px solid rgb(223, 214, 210);
+  }
+  &:nth-child(2) {
+    border-right: 1px solid rgb(223, 214, 210);
+  }
+`;
+const SNSBox = styled.div`
+  width: 250px;
+  display: flex;
+  justify-content: space-between;
+`;
+const SNSButton = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50px;
+  height: 50px;
+  background: rgb(223, 214, 210);
+  border-radius: 50%;
+  border: none;
+  &:hover {
     cursor: pointer;
-    &:nth-child(1) {
-      border-right: 1px solid rgb(223, 214, 210);
+  }
+`;
+const SNSBtnImg = styled.img`
+  width: 50px;
+  height: 50px;
+  border: none;
+  outline: none;
+  border-radius: 50%;
+  margin: 0;
+`;
+const LowBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+  width: 80%;
+  margin: 0 20px 0 20px;
+  .lowBoxA {
+    font-size: 0.8em;
+    text-decoration: none;
+    &:visited {
+      color: black;
     }
-    &:nth-child(2) {
-      border-right: 1px solid rgb(223, 214, 210);
-    }
-  `;
-  const SNSBox = styled.div`
-    width: 250px;
-    display: flex;
-    justify-content: space-between;
-  `;
-  const SNSButton = styled.button`
-    width: 50px;
-    height: 50px;
-    background: rgb(223, 214, 210);
-    border-radius: 50%;
-    border: none;
-    &:hover {
-      cursor: pointer;
-    }
-  `;
-  const LowBox = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-self: center;
-    width: 80%;
-    margin: 0 20px 0 20px;
-    .lowBoxA {
-      font-size: 0.8em;
-      text-decoration: none;
-      &:visited {
-        color: black;
-      }
-    }
-    .lowBoxSpan {
-      font-size: 0.8em;
-    }
-  `;
+  }
+  .lowBoxSpan {
+    font-size: 0.8em;
+  }
+`;
+const FooterDesign = () => {
+  const [iconUrls, setIconUrls] = useState([]);
+  useEffect(() => {
+    // 파이어베이스를 이용한 홈페이지 아이콘 렌더링
+    const storage = getStorage(firebase.app());
+    const storageIconRef = ref(storage, "Icons");
 
+    Promise.all([
+      getDownloadURL(ref(storageIconRef, "네이버.png")),
+      getDownloadURL(ref(storageIconRef, "페이스북.png")),
+      getDownloadURL(ref(storageIconRef, "인스타그램.png")),
+      getDownloadURL(ref(storageIconRef, "트위터.png")),
+    ])
+      .then((urls) => {
+        setIconUrls(urls);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
   return (
     <FooterContainer>
       <UpperBox>
@@ -116,10 +147,18 @@ const FooterDesign = () => {
           <FooterButton>입점문의</FooterButton>
         </FooterButtonBox>
         <SNSBox>
-          <SNSButton>블로그</SNSButton>
-          <SNSButton>페이스북</SNSButton>
-          <SNSButton>인스타그램</SNSButton>
-          <SNSButton>트위터</SNSButton>
+          <SNSButton>
+            <SNSBtnImg src={iconUrls[0]} />
+          </SNSButton>
+          <SNSButton>
+            <SNSBtnImg src={iconUrls[1]} />
+          </SNSButton>
+          <SNSButton>
+            <SNSBtnImg src={iconUrls[2]} />
+          </SNSButton>
+          <SNSButton>
+            <SNSBtnImg src={iconUrls[3]} />
+          </SNSButton>
         </SNSBox>
       </UpperBox>
       <LowBox>

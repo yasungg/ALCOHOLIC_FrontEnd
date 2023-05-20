@@ -2,8 +2,25 @@ import upArrow from "../Image/angle-up.png";
 import logo from "../Image/logo.jpg";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import firebase from "firebase/compat/app";
+import { getStorage, ref, getDownloadURL } from "firebase/storage";
 
 export const UpBtn = () => {
+  const [iconUrls, setIconUrls] = useState([]);
+  useEffect(() => {
+    // 파이어베이스를 이용한 홈페이지 아이콘 렌더링
+    const storage = getStorage(firebase.app());
+    const storageIconRef = ref(storage, "Icons");
+
+    Promise.all([getDownloadURL(ref(storageIconRef, "angle-up.png"))])
+      .then((urls) => {
+        setIconUrls(urls);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
   const UpBtn = styled.button`
     box-sizing: border-box;
     display: flex;
@@ -25,7 +42,7 @@ export const UpBtn = () => {
 
   return (
     <UpBtn onClick={pageUp}>
-      <img src={upArrow} alt="위로가기" />
+      <img src={iconUrls[0]} alt="위로가기" />
     </UpBtn>
   );
 };

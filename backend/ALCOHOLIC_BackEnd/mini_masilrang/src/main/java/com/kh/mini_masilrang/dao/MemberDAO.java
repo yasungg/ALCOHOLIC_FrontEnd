@@ -35,7 +35,7 @@ public class MemberDAO {
                 MemberVO vo = new MemberVO();
                 vo.setUser_no(no);
                 vo.setUser_id(id);
-                vo.setUser_id(pw);
+                vo.setUser_pw(pw);
                 vo.setUser_name(name);
                 vo.setUser_jumin(jumin);
                 vo.setUser_email(email);
@@ -103,6 +103,46 @@ public class MemberDAO {
         }
         return false;
     }
+    //로그인 시 정보 가져오기
+    public List<MemberVO> memberInfo(String user_id) {
+        List<MemberVO> list = new ArrayList<>();
+        try {
+            conn = Common.getConnection();
+            stmt = conn.createStatement();
+            String sql = "SELECT * FROM MEMBER_INFO WHERE USER_ID = " + "'" + user_id + "'";
+            rs = stmt.executeQuery(sql);
+
+            while(rs.next()) {
+                int user_no = rs.getInt("USER_NO");
+                String id = rs.getString("USER_ID");
+                String pw = rs.getString("USER_PW");
+                String name = rs.getString("USER_NAME");
+                String jumin = rs.getString("USER_JUMIN");
+                String email = rs.getString("USER_EMAIL");
+                String phone = rs.getString("USER_PHONE");
+                String sbti = rs.getString("USER_SBTI");
+
+
+                MemberVO vo = new MemberVO();
+                vo.setUser_no(user_no);
+                vo.setUser_id(id);
+                vo.setUser_pw(pw);
+                vo.setUser_name(name);
+                vo.setUser_jumin(jumin);
+                vo.setUser_email(email);
+                vo.setUser_phone(phone);
+                vo.setUser_sbti(sbti);
+                list.add(vo);
+            }
+            Common.close(rs);
+            Common.close(stmt);
+            Common.close(conn);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
 
     // 회원 가입
     public boolean memberRegister(String user_id, String user_pw, String user_name, String user_jumin, String user_email,String user_phone) {

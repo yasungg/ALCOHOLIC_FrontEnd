@@ -276,11 +276,12 @@ const Detail = () => {
           </TabMenu>
         </TabMenuContainer>
 
-        {currentTab === 0 && (
-          <Productcontent>
-            <Point src={point1} alt="핵심포인트" />
-          </Productcontent>
-        )}
+        {currentTab === 0 &&
+          productDetail.map((detail) => (
+            <Productcontent key={detail.product_no}>
+              <Point src={detail.description_img} alt="핵심포인트" />
+            </Productcontent>
+          ))}
 
         {currentTab === 1 && (
           <Review>

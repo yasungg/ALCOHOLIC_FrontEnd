@@ -1,28 +1,33 @@
 import React, { useState } from "react";
-import { storage } from "../api/firebase";
+import firebase from "firebase/compat/app";
+import { getStorage, ref } from "firebase/storage";
+
 const ImageUploader = () => {
-  const [file, setFile] = useState(null);
+  const [files, setFiles] = useState(null);
   const [url, setUrl] = useState("");
 
   const handleFileInputChange = (e) => {
-    setFile(e.target.files[0]);
+    const selectedFiles = Array.from(e.target.files);
+    setFiles(selectedFiles);
   };
 
   const handleUploadClick = () => {
-    const storageRef = storage.ref();
-    const fileRef = storageRef.child(file.name);
-    fileRef.put(file).then(() => {
-      console.log("File uploaded successfully!");
-      fileRef.getDownloadURL().then((url) => {
-        console.log("저장경로 확인 : " + url);
-        setUrl(url);
-      });
-    });
+    const storage = getStorage(firebase.app());
+    const storageRef = ref(storage, "ReviewImage");
+
+    Promise.all(
+      files.map((file) => {
+        const fileRef = storageRef.child(file.name);
+        fileRef.put(file).then((urls) => {
+          setUrl(urls);
+        });
+      })
+    );
   };
 
   return (
     <div>
-      <input type="file" onChange={handleFileInputChange} />
+      <input type="file" multiple onChange={handleFileInputChange} />
       <button onClick={handleUploadClick}>Upload</button>
       {url && <img src={url} alt="uploaded" />}
     </div>

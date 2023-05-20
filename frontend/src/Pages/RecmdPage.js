@@ -4,7 +4,9 @@ import firebase from "firebase/compat/app";
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
 import { useNavigate } from "react-router-dom";
 import HeaderDesign from "../HeaderDesign";
+import FooterDesign from "../FooterDesign";
 import AxiosApi from "../api/AxiosApi";
+import { UpBtn } from "../component/ReusableComponents";
 
 const initialMinheight = "200px";
 const changedMinheight = "295px";
@@ -12,7 +14,6 @@ const changedMinheight = "295px";
 const Container = styled.div`
   display: flex;
   width: 100%;
-  height: 100%;
   flex-direction: column;
   align-items: center;
 `;
@@ -20,7 +21,6 @@ const BodyContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: 1024px;
-  height: 100vh;
   @media screen and (max-width: 1024px) {
     width: 100%;
   }
@@ -185,6 +185,14 @@ const ThemeCardDesc = styled.div`
   width: 90%;
   height: 30px;
   min-height: 30px;
+`;
+const BottomBox = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 150px;
+  margin-bottom: 30px;
 `;
 const RecmdPage = () => {
   const [isFirstBtnClicked, setIsFirstBtnClicked] = useState(true); // '종류별' 버튼 토글
@@ -597,7 +605,11 @@ const RecmdPage = () => {
             </RecmdCard>
           ))}
         </CardContainer>
+        <BottomBox>
+          <UpBtn />
+        </BottomBox>
       </BodyContainer>
+      <FooterDesign />
     </Container>
   );
 };

@@ -22,20 +22,24 @@ public class ProductDAO {
         try {
             conn = Common.getConnection();
 
-            String sql = "SELECT PRODUCT_NAME, CONTENT1, CONTENT2, PRODUCT_IMG FROM PRODUCT WHERE GENRE = ?";
+            String sql = "SELECT PRODUCT_NO, PRODUCT_NAME, CONTENT1, CONTENT2, PRODUCT_IMG, DESCRIPTION_IMG FROM PRODUCT WHERE GENRE = ?";
             pStmt = conn.prepareStatement(sql);
             pStmt.setString(1, checked);
             rs = pStmt.executeQuery();
             while(rs.next()) {
                 ProductVO vo = new ProductVO();
+                int product_no = rs.getInt("PRODUCT_NO");
                 String product_name = rs.getString("PRODUCT_NAME");
                 String content1 = rs.getString("CONTENT1");
                 String content2 = rs.getString("CONTENT2");
                 String product_img = rs.getString("PRODUCT_IMG");
+                String description_img = rs.getString("DESCRIPTION_IMG");
+                vo.setProduct_no(product_no);
                 vo.setProduct_name(product_name);
                 vo.setContent1(content1);
                 vo.setContent2(content2);
                 vo.setProduct_img(product_img);
+                vo.setDescription_img(description_img);
                 list1.add(vo);
             }
             Common.close(rs);

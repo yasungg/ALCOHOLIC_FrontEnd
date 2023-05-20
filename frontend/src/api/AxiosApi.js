@@ -10,6 +10,10 @@ const AxiosApi = {
     };
     return await axios.post(KH_DOMAIN + "/login", login);
   },
+  //로그인 시 회원정보 불러오기
+  memberGet: async (id) => {
+    return await axios.get(KH_DOMAIN + `/getMember?id=${id}`);
+  },
   // 회원 가입
   MemberSign: async (id, pw, name, jumin, email, phone) => {
     const member = {
@@ -41,6 +45,17 @@ const AxiosApi = {
     };
     return await axios.post(KH_DOMAIN + "/update", update);
   },
+  // MemberInfo: async (userNum) => {
+  //   try {
+  //     const numResponse = await axios.get(
+  //       KH_DOMAIN + `/user?usernum=${userNum}`
+  //     );
+  //     return numResponse.data;
+  //   } catch(error) {
+  //     console.error("AxiosApi.MemberInfo error", error);
+  //     return null;
+  //   }
+  // },
   Checked: async (checked) => {
     try {
       const response = await axios.get(

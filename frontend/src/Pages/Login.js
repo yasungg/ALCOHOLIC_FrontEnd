@@ -122,7 +122,7 @@ const Login = () => {
   const [isPw, setIsPw] = useState(false);
 
   //로그인 정보 저장을 위한 Context API
-  const { contextLogin } = useContext(UserContext);
+  const { contextLogin, setUserNum } = useContext(UserContext);
 
   const onChangeId = (e) => {
     setInputId(e.target.value);
@@ -134,14 +134,17 @@ const Login = () => {
   };
   const onClickLogin = async () => {
     // 로그인을 위해 axios 호출
-    const response = await AxiosApi.memberLogin(inputId, inputPw);
-    console.log(response.data);
-    if (response.data === true) {
-      console.log("로그인 성공");
-      contextLogin();
-      navigate("/");
-    } else {
-      console.log("로그인 에러");
+    try {
+      const response1 = await AxiosApi.memberLogin(inputId, inputPw);
+      const response2 = await AxiosApi.memberGet(inputId);
+      const rst = response2.data;
+      if (response1.data === true) {
+        contextLogin();
+        setUserNum(rst[0].user_no);
+        navigate("/");
+      }
+    } catch (error) {
+      console.error("로그인 에러", error);
     }
   };
 

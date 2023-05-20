@@ -5,6 +5,12 @@ import firebase from "firebase/compat/app";
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
 import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "./api/Context";
+import AxiosApi from "./api/AxiosApi";
+
+const initialminWidth = "120px";
+const changedminWidth = "220px";
+const initialMargin = "50px";
+const changedMargin = "0";
 
 const Header = styled.div`
   box-sizing: border-box;
@@ -108,15 +114,19 @@ const SearchBox = styled.div`
     .searchBtnIcon {
       width: 20px;
       height: 20px;
-      color: rgba(223, 214, 210);
+      color: rgb(223, 214, 210);
     }
   }
 `;
 const UserMenu = styled.div`
-  width: 120px;
-  height: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: ${(props) => props.minWidth};
+  height: 30px;
   align-self: flex-start;
-  margin-right: 50px;
+  margin-right: ${(props) => props.margin};
+  font-size: 0.5rem;
 `;
 const UserButtons = styled.button`
   width: 60px;
@@ -151,17 +161,20 @@ const HamburgerBtn = styled.button`
 `;
 
 const HeaderDesign = () => {
-  const [imageUrls, setImageUrls] = useState([]);
-  const navigate = useNavigate();
+  const [imageUrls, setImageUrls] = useState([]); // 아이콘 이미지의 파이어베이스 URL을 담은 useState
+  const navigate = useNavigate(); // Navigate bar를 위한 useNavigate
+  const { isLogin, contextLogout, userNum } = useContext(UserContext); // 로그인 관리를 위한 Context API
+  const [userName, setUserName] = useState("");
 
   useEffect(() => {
+    // 파이어베이스를 이용한 홈페이지 아이콘 렌더링
     const storage = getStorage(firebase.app());
     const storageIconRef = ref(storage, "Icons");
 
     Promise.all([
-      getDownloadURL(ref(storageIconRef, "logo.jpg")),
-      getDownloadURL(ref(storageIconRef, "SearchIcon.png")),
-      getDownloadURL(ref(storageIconRef, "HamburgerBtn.png")),
+      getDownloadURL(ref(storageIconRef, "logo.jpg")), // 로고 이미지
+      getDownloadURL(ref(storageIconRef, "SearchIcon.png")), // 검색 버튼 이미지
+      getDownloadURL(ref(storageIconRef, "HamburgerBtn.png")), // 햄버거 버튼 이미지
     ])
       .then((urls) => {
         setImageUrls(urls);
@@ -170,6 +183,23 @@ const HeaderDesign = () => {
         console.log(error);
       });
   }, []);
+  useEffect(() => {
+    const getName = async (num) => {
+      if (isLogin) {
+        try {
+          const responseNum = await AxiosApi.userNumber(num);
+          console.log(responseNum.data);
+          setUserName(responseNum.data[0].user_name);
+        } catch (error) {
+          console.error("이름 받아오기 실패!!", error);
+          console.log(userNum);
+        }
+      } else if (!isLogin) {
+        setUserName("");
+      }
+    };
+    getName(userNum);
+  }, [isLogin]);
 
   return (
     <Header>
@@ -185,14 +215,35 @@ const HeaderDesign = () => {
             <img src={imageUrls[1]} className="searchBtnIcon" alt="돋" />
           </button>
         </SearchBox>
-        <UserMenu className="userMenu">
-          <UserButtons className="signUp" onClick={() => navigate("/SignUp")}>
-            <span>회원가입</span>
-          </UserButtons>
-          <UserButtons onClick={() => navigate("/Login")}>
-            <span>로그인</span>
-          </UserButtons>
-        </UserMenu>
+        {isLogin ? (
+          <UserMenu
+            className="userMenu"
+            minWidth={changedminWidth}
+            margin={changedMargin}
+          >
+            <p>
+              <UserButtons onClick={() => navigate("/MyPage")}>
+                {userName}
+              </UserButtons>
+              님 환영합니다!
+            </p>
+            <UserButtons onClick={contextLogout}>로그아웃</UserButtons>
+          </UserMenu>
+        ) : (
+          <UserMenu
+            className="userMenu"
+            minWidth={initialminWidth}
+            margin={initialMargin}
+          >
+            <UserButtons className="signUp" onClick={() => navigate("/SignUp")}>
+              <span>회원가입</span>
+            </UserButtons>
+            <UserButtons onClick={() => navigate("/Login")}>
+              <span>로그인</span>
+            </UserButtons>
+          </UserMenu>
+        )}
+
         <HamburgerBtn className="HamburgerBtn">
           <img src={imageUrls[2]} alt="" />
         </HamburgerBtn>

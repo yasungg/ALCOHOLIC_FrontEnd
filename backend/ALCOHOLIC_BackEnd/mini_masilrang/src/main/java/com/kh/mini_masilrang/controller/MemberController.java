@@ -56,7 +56,13 @@ public class MemberController {
         boolean result = dao.loginCheck(id, pw);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
-
+    // GET : 로그인시 정보 가져오기
+    @GetMapping("/getMember")
+    public ResponseEntity<List<MemberVO>> MemberGet(@RequestParam String id) {
+        MemberDAO dao = new MemberDAO();
+        List<MemberVO> list = dao.memberInfo(id);
+        return new ResponseEntity<>(list, HttpStatus.OK);
+    }
 
     // POST : 회원 정보 수정
     @PostMapping("/update")
@@ -74,7 +80,7 @@ public class MemberController {
 
     // GET: 개별 유저 정보 전체 조회
     @GetMapping("/user")
-    public ResponseEntity<List<MemberVO>> memberList(@RequestParam Integer no) {
+    public ResponseEntity<List<MemberVO>> memberInfo(@RequestParam int no) {
         System.out.println("유저 번호: " + no);
         MemberDAO dao = new MemberDAO();
         List<MemberVO> list = dao.memberSelect(no);
