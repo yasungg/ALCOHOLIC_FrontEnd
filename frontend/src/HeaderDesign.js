@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import { useState, useEffect, useContext } from "react";
 import axios from "axios";
-import firebase from "firebase/compat/app";
-import { getStorage, ref, getDownloadURL } from "firebase/storage";
+import { storage } from "./api/firebase";
+import { ref, getDownloadURL } from "firebase/storage";
 import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "./api/Context";
 import AxiosApi from "./api/AxiosApi";
@@ -168,7 +168,6 @@ const HeaderDesign = () => {
 
   useEffect(() => {
     // 파이어베이스를 이용한 홈페이지 아이콘 렌더링
-    const storage = getStorage(firebase.app());
     const storageIconRef = ref(storage, "Icons");
 
     Promise.all([

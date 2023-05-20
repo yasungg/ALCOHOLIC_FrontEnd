@@ -4,11 +4,12 @@ import Banner from "../Banner";
 import styled from "styled-components";
 import React, { useState, useEffect, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import firebase from "firebase/compat/app";
-import { getStorage, ref, getDownloadURL } from "firebase/storage";
+import { storage } from "../api/firebase";
+import { ref, getDownloadURL } from "firebase/storage";
 import DescBoxIcon1 from "../Image/부모님.png";
 import DescBoxIcon2 from "../Image/벚꽃.png";
 import { UpBtn } from "../component/ReusableComponents";
+import Modal from "../utils/Modal";
 
 const Container = styled.div`
   // 전체 영역을 설정 flexbox로 배치할 때 기준이 필요할 것이라 생각했기 때문
@@ -95,7 +96,6 @@ const Main = () => {
 
   useEffect(() => {
     // 파이어베이스를 이용한 홈페이지 아이콘 렌더링
-    const storage = getStorage(firebase.app());
     const storageIconRef = ref(storage, "Icons");
 
     Promise.all([
@@ -109,6 +109,7 @@ const Main = () => {
         console.log(error);
       });
   }, []);
+
   return (
     <Container>
       <HeaderDesign />

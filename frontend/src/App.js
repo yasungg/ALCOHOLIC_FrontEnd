@@ -13,7 +13,7 @@ import RecmdPage from "./Pages/RecmdPage";
 import Product from "./Pages/Product";
 import UserStore from "./api/Context";
 import ProductSearch from "./component/ProductSearch";
-
+import firebase from "firebase/compat/app";
 import SBTIMain from "./Pages/SBTIMain";
 import SBTIStartQuestion1 from "./Pages/SBTIpages/SBTIStartQuestion1";
 import SBTIStartQuestion2 from "./Pages/SBTIpages/SBTIStartQuestion2";

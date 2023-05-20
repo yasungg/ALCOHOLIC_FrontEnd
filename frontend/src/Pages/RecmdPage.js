@@ -211,7 +211,6 @@ const RecmdPage = () => {
   const [thirdData, setThirdData] = useState([]); // 기념일 테마 검색 결과 저장
   const [forthData, setForthData] = useState([]); // 홈파티 테마 검색 결과 저장
   const [fifthData, setFifthData] = useState([]); // 감성캠핑 테마 검색 결과 저장
-  const [productName, setProductName] = useState("");
   const [divMinHeight, setDivMinHeight] = useState(initialMinheight);
   // ㄴ 종류별/테마 버튼 토글로 Category Container styled component min-height 값 변경을 위한 useState
 

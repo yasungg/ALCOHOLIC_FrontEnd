@@ -3,14 +3,13 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import styled from "styled-components";
 import { useState, useEffect } from "react";
-import firebase from "firebase/compat/app";
-import { getStorage, ref, getDownloadURL } from "firebase/storage";
+import { storage } from "./api/firebase";
+import { ref, getDownloadURL } from "firebase/storage";
 
 const Banner = () => {
   const [imageUrls, setImageUrls] = useState([]);
 
   useEffect(() => {
-    const storage = getStorage(firebase.app());
     const storageRef = ref(storage, "images");
 
     Promise.all([

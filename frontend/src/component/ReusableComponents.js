@@ -1,16 +1,14 @@
-import upArrow from "../Image/angle-up.png";
 import logo from "../Image/logo.jpg";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
-import firebase from "firebase/compat/app";
-import { getStorage, ref, getDownloadURL } from "firebase/storage";
+import { storage } from "../api/firebase";
+import { ref, getDownloadURL } from "firebase/storage";
 
 export const UpBtn = () => {
   const [iconUrls, setIconUrls] = useState([]);
   useEffect(() => {
     // 파이어베이스를 이용한 홈페이지 아이콘 렌더링
-    const storage = getStorage(firebase.app());
     const storageIconRef = ref(storage, "Icons");
 
     Promise.all([getDownloadURL(ref(storageIconRef, "angle-up.png"))])
@@ -36,6 +34,7 @@ export const UpBtn = () => {
       outline: none;
     }
   `;
+
   const pageUp = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };

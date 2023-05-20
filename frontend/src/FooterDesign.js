@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useState, useEffect } from "react";
-import firebase from "firebase/compat/app";
-import { getStorage, ref, getDownloadURL } from "firebase/storage";
+import { storage } from "./api/firebase";
+import { ref, getDownloadURL } from "firebase/storage";
 const FooterContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -115,7 +115,6 @@ const FooterDesign = () => {
   const [iconUrls, setIconUrls] = useState([]);
   useEffect(() => {
     // 파이어베이스를 이용한 홈페이지 아이콘 렌더링
-    const storage = getStorage(firebase.app());
     const storageIconRef = ref(storage, "Icons");
 
     Promise.all([
