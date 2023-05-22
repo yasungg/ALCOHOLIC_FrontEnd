@@ -165,7 +165,7 @@ const HeaderDesign = () => {
   const navigate = useNavigate(); // Navigate bar를 위한 useNavigate
   const { isLogin, contextLogout, userNum } = useContext(UserContext); // 로그인 관리를 위한 Context API
   const [userName, setUserName] = useState("");
-
+  const [inputProductName, setInputProductName] = useState("");
   useEffect(() => {
     // 파이어베이스를 이용한 홈페이지 아이콘 렌더링
     const storageIconRef = ref(storage, "Icons");
@@ -199,7 +199,16 @@ const HeaderDesign = () => {
     };
     getName(userNum);
   }, [isLogin]);
-
+  const onClickLogout = () => {
+    contextLogout();
+    navigate("/");
+  };
+  const onChangeProductName = (e) => {
+    setInputProductName(e.target.value);
+  };
+  const swordPush = () => {
+    navigate(`/ProductSearch?sword=${inputProductName}`);
+  };
   return (
     <Header>
       <HeaderContainer>
@@ -209,8 +218,13 @@ const HeaderDesign = () => {
           </Link>
         </LogoButton>
         <SearchBox className="searchBox">
-          <input type="text" name="search" id="search" />
-          <button className="searchBtn" type="submit">
+          <input
+            type="text"
+            value={inputProductName}
+            id="search"
+            onChange={onChangeProductName}
+          />
+          <button className="searchBtn" type="submit" onClick={swordPush}>
             <img src={imageUrls[1]} className="searchBtnIcon" alt="돋" />
           </button>
         </SearchBox>
@@ -226,7 +240,7 @@ const HeaderDesign = () => {
               </UserButtons>
               님 환영합니다!
             </p>
-            <UserButtons onClick={contextLogout}>로그아웃</UserButtons>
+            <UserButtons onClick={onClickLogout}>로그아웃</UserButtons>
           </UserMenu>
         ) : (
           <UserMenu

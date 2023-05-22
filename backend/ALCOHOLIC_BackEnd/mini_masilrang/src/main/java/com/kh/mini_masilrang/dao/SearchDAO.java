@@ -37,7 +37,7 @@ public class SearchDAO {
                 String store_link = rs.getString("PRODUCT_IMG");
                 String product_img = rs.getString("PRODUCT_IMG");
                 String description_img = rs.getString("DESCRIPTION_IMG");
-                String thema = rs.getString("THEMA1");
+                String thema = rs.getString("THEMA");
                 ProductVO vo = new ProductVO();
                 vo.setProduct_no(product_no);
                 vo.setProduct_name(product_name);

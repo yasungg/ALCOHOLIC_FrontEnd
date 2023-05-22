@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import firebase from "firebase/compat/app";
-import { getStorage, ref } from "firebase/storage";
+import { storage } from "../api/firebase";
+import { ref } from "firebase/storage";
 
 const ImageUploader = () => {
   const [files, setFiles] = useState(null);
@@ -12,7 +12,6 @@ const ImageUploader = () => {
   };
 
   const handleUploadClick = () => {
-    const storage = getStorage(firebase.app());
     const storageRef = ref(storage, "ReviewImage");
 
     Promise.all(

@@ -55,17 +55,19 @@ public class ProductDAO {
         List<ProductVO> list2 = new ArrayList<>();
         try {
             conn = Common.getConnection();
-            String themesql = "SELECT PRODUCT_NAME, CONTENT1, CONTENT2, PRODUCT_IMG FROM PRODUCT WHERE THEMA = ?";
+            String themesql = "SELECT PRODUCT_NO, PRODUCT_NAME, CONTENT1, CONTENT2, PRODUCT_IMG FROM PRODUCT WHERE THEMA = ?";
             pStmt = conn.prepareStatement(themesql);
             pStmt.setString(1, theme);
             rs = pStmt.executeQuery();
 
             while(rs.next()) {
                 ProductVO vo = new ProductVO();
+                int product_no = rs.getInt("PRODUCT_NO");
                 String product_name = rs.getString("PRODUCT_NAME");
                 String content1 = rs.getString("CONTENT1");
                 String content2 = rs.getString("CONTENT2");
                 String product_img = rs.getString("PRODUCT_IMG");
+                vo.setProduct_no(product_no);
                 vo.setProduct_name(product_name);
                 vo.setContent1(content1);
                 vo.setContent2(content2);

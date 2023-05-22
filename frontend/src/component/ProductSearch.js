@@ -1,12 +1,27 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import AxiosApi from "../api/AxiosApi";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+import HeaderDesign from "../HeaderDesign";
+import FooterDesign from "../FooterDesign";
 
-const Search = styled.div`
-.searchbutton {
-    width: 50px;
-    height: 20px;
-}
+const Container = styled.div`
+  // 전체 영역을 설정 flexbox로 배치할 때 기준이 필요할 것이라 생각했기 때문
+  box-sizing: border-box;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+const BodyContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 1024px;
+  @media screen and (max-width: 1024px) {
+    width: 100%;
+  }
 `;
 const CardContainer = styled.div`
   width: 100%;
@@ -60,26 +75,35 @@ const CardTag = styled.div`
   align-self: center;
 `;
 const ProductSearch = () => {
+  const navigate = useNavigate();
+  const { search } = useLocation();
+  const queryParams = new URLSearchParams(search);
+  const sword = queryParams.get("sword");
+  const [searchResult, setSearchResult] = useState([]);
 
-    const [inputProductName,setProductName] = useState("");
-    const [searchResult, setSearchResult] = useState([]);
-    const onChangeProductName = (e) => {
-        setProductName(e.target.value);
-    }
-    const search = async() => {
-        const rsp = await AxiosApi.searchResultGet(inputProductName);
-        if(rsp.status === 200) setSearchResult(rsp.data);
-        console.log(rsp.data);
-    }
+  useEffect(() => {
+    console.log(sword);
+    const search = async () => {
+      const rsp = await AxiosApi.searchResultGet(sword);
 
-    return(
-        <Search>
-            <input type="text" value={inputProductName} onChange={onChangeProductName} />
-            <button className="searchbutton" onClick={search}>검색</button>
-        
-            <CardContainer>
+      setSearchResult(rsp.data);
+      console.log(rsp.data);
+    };
+    search();
+  }, [sword]);
+  const cardClick = (product_no) => {
+    navigate(`/Product/${product_no}`);
+  };
+  return (
+    <Container>
+      <HeaderDesign />
+      <BodyContainer>
+        <CardContainer>
           {searchResult.map((e) => (
-            <RecmdCard key={e.product_name}>
+            <RecmdCard
+              key={e.product_name}
+              onClick={() => cardClick(e.product_no)}
+            >
               <CardImg src={e.product_img} />
               <CardTitle>
                 <h4>{e.product_name}</h4>
@@ -88,8 +112,10 @@ const ProductSearch = () => {
               <CardTag>{e.content2}</CardTag>
             </RecmdCard>
           ))}
-          </CardContainer>
-      </Search>
-    );
+        </CardContainer>
+      </BodyContainer>
+      <FooterDesign />
+    </Container>
+  );
 };
 export default ProductSearch;
