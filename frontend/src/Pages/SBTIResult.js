@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import AxiosApi from "../api/AxiosApi";
 import X from "../Image/x.png";
+import { UserContext } from "../api/Context";
 
 const OutBox = styled.div`
   padding-bottom: 100px;
@@ -38,6 +39,12 @@ const Container = styled.div`
 
   .usersbti {
     font-size: 1.5em;
+  }
+
+  .sbtiresult {
+    font-weight: bold;
+    font-style: italic;
+    color: red;
   }
 
   .recommend {
@@ -128,90 +135,107 @@ const Container = styled.div`
 `;
 
 const SBTIResult = () => {
-  let tmpSbti;
-
   const navigate = useNavigate();
 
+//  const [ tmpSbti, setTmpSbti ] = useState("");
   const [userInfo, setUserInfo] = useState([]);
   const [sbtiInfo, setSbtiInfo] = useState([]);
 
+  const { userNum } = useContext(UserContext); // 로그인 관리를 위한 Context API
+
   // 설문 결과에 따른 4가지 주종 유형 계산
-  const SBTIResult = () => {
+  const tmpSBTIResult = () => {
     const takju = parseInt(localStorage.getItem("takju"));
-    const chunju = parseInt(localStorage.getItem("chungju"));
+    const chungju = parseInt(localStorage.getItem("chungju"));
     const wine = parseInt(localStorage.getItem("wine"));
     const spirits = parseInt(localStorage.getItem("spirits"));
-
-    const values = [takju, chunju, wine, spirits];
+  
+    const values = [takju, chungju, wine, spirits];
     const maxValue = Math.max(...values);
-
-    const variableNames = ["takju", "chunju", "wine", "spirits"];
+  
+    // const filteredValues = values.filter((value) => value !== maxValue);
+    // const secondMaxValue = Math.max(...filteredValues);
+  
+    const variableNames = ["takju", "chungju", "wine", "spirits"];
     const maxVariable = variableNames[values.indexOf(maxValue)];
-    variableNames.splice(values.indexOf(maxValue), 1);
-    const secondMaxVariable =
-      variableNames[values.indexOf(Math.max(...values))];
-
+    // const secondMaxVariable = variableNames[filteredValues.indexOf(secondMaxValue)];
+  
     return {
-      maxVariable: String(maxVariable),
-      secondMaxVariable: String(secondMaxVariable),
+      maxVariable,
+      // secondMaxVariable,
     };
   };
 
-  const result = SBTIResult();
-  console.log("첫번째 " + result.maxVariable); // 가장 큰 값의 변수명
-  console.log("두번째" + result.secondMaxVariable); // 두 번째로 큰 값의 변수명
-  if (result.maxVariable === "takju") {
-    tmpSbti = "숙취가 두렵지 않은 탁주 러버";
-    AxiosApi.sbtiUpdate(10000001, tmpSbti);
-  }
-  if (result.maxVariable === "chungju") {
-    tmpSbti = "청아하고 우아한 한잔";
-    AxiosApi.sbtiUpdate(10000001, tmpSbti);
-  }
-  if (result.maxVariable === "wine") {
-    tmpSbti = "와인 말고 전통주";
-    AxiosApi.sbtiUpdate(10000001, tmpSbti);
-  }
-  if (result.maxVariable === "spirits") {
-    tmpSbti = "깔끔하고 묵직하게";
-    AxiosApi.sbtiUpdate(10000001, tmpSbti);
-  }
-
-  // 이미지나 술 이름 클릭시 해당 상세 페이지로 이동
-  const handleOnClick = () => {
-    navigate("/");
-  };
+  const result = tmpSBTIResult();
+  console.log(userNum);
+  console.log(result);
+  
+  useEffect(() => {
+    const resultFilter = async() => {
+      switch (result.maxVariable) {
+        case "takju":
+        // setTmpSbti("숙취가 두렵지 않은 탁주 러버");
+          await AxiosApi.sbtiUpdate(userNum, "숙취가 두렵지 않은 탁주 러버");
+          const rsp1 = await AxiosApi.sbtiRecommend("숙취가 두렵지 않은 탁주 러버");
+          if (rsp1.status === 200) setSbtiInfo(rsp1.data);
+          console.log("탁주 1등");
+          console.log(sbtiInfo);
+          break;
+        case "chungju":
+        // setTmpSbti("청아하고 우아한 한잔");
+          await AxiosApi.sbtiUpdate(userNum, "청아하고 우아한 한잔");
+          const rsp2 = await AxiosApi.sbtiRecommend("청아하고 우아한 한잔");
+          if (rsp2.status === 200) setSbtiInfo(rsp2.data);
+          console.log("청주 1등");
+          console.log(sbtiInfo);
+          break;
+        case "wine":
+        // setTmpSbti("와인 말고 전통주");
+          await AxiosApi.sbtiUpdate(userNum, "와인 말고 전통주");
+          const rsp3 = await AxiosApi.sbtiRecommend("와인 말고 전통주");
+          if (rsp3.status === 200) setSbtiInfo(rsp3.data);
+          console.log("과실주 1등");
+          console.log(sbtiInfo);
+          break;
+        case "spirits":
+          // setTmpSbti("깔끔하고 묵직하게");
+          await AxiosApi.sbtiUpdate(userNum, "깔끔하게 묵직하게");
+          const rsp4 = await AxiosApi.sbtiRecommend("깔끔하게 묵직하게");
+          if (rsp4.status === 200) setSbtiInfo(rsp4.data);
+          console.log("증류주 1등");
+          console.log(sbtiInfo);
+          break;
+        default:
+          console.log("스위치문 오류");
+          break;
+      }
+    }
+    resultFilter();
+  }, [result.maxVariable]);
 
   useEffect(() => {
-    const userInfo = async () => {
-      const rsp = await AxiosApi.userNumber("10000001");
+    const userInfos = async () => {
+      const rsp = await AxiosApi.userNumber(userNum);
       if (rsp.status === 200) setUserInfo(rsp.data);
     };
-    userInfo();
+    userInfos();
 
-    const sbtiInfo = async () => {
-      const rsp = await AxiosApi.sbtiRecommend(tmpSbti);
-      if (rsp.status === 200) setSbtiInfo(rsp.data);
-    };
-    sbtiInfo();
-  }, [tmpSbti]);
+    // const sbtiInfos = async () => {
+    //   const rsp = await AxiosApi.sbtiRecommend(tmpSbti);
+    //   if (rsp.status === 200) setSbtiInfo(rsp.data);
+    // };
+    // sbtiInfos();
+  }, []);
 
   return (
     <OutBox>
       <Container>
-        <img
-          className="close"
-          src={X}
-          alt="x"
-          onClick={() => {
-            navigate("/");
-          }}
-        />
+        <img className="close" src={X} alt="x" onClick={() => {navigate("/");}}/>
         <div className="usersbti">
-          {userInfo.map((user) => (
+          {userInfo && userInfo.map((user) => (
             <div key={user.user_no}>
               <p>{user.user_name}님의 SBTI 결과</p>
-              <p>{user.user_sbti}</p>
+              <p className="sbtiresult">"{user.user_sbti}"</p>
             </div>
           ))}
         </div>
@@ -219,13 +243,13 @@ const SBTIResult = () => {
           <p>SBTI 유형에 맞는 추천 전통주</p>
         </div>
         <div className="recommend">
-          {sbtiInfo.map(({ recImg, recommend }) => (
+          {sbtiInfo && sbtiInfo.map(( {recImg, recommend, recUrl} ) => (
             <div key={recImg}>
               <div>
-                <img src={recImg} alt="추천 이미지" onClick={handleOnClick} />
+                <img src={recImg} alt="추천 이미지" onClick={()=>{navigate(recUrl);}} />
               </div>
               <div>
-                <p className="sul" onClick={handleOnClick}>
+                <p className="sul" onClick={()=>{navigate(recUrl);}}>
                   {recommend}
                 </p>
               </div>

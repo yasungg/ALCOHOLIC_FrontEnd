@@ -1,9 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import AxiosApi from "../api/AxiosApi";
 import { storage } from "../api/firebase";
 import { ref, getDownloadURL } from "firebase/storage";
+import { UserContext } from "../api/Context";
+
 
 const OutBox = styled.div`
   display: flex;
@@ -44,6 +46,14 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
+
+  .sbtiresult {
+    font-weight: bold;
+    font-style: italic;
+    color: blue;
+    text-align: center;
+  }
+
   .imo {
     width: 16em;
     border-radius: 50%;
@@ -81,6 +91,10 @@ const SBTIMain = () => {
 
   const [userInfo, setUserInfo] = useState([]);
   const [imageUrls, setImageUrls] = useState([]);
+
+  const { userNum } = useContext(UserContext); // 로그인 관리를 위한 Context API
+
+
   // localStorage를 이용하여 SBTI 문항에 대한 답변 기록 저장
   localStorage.setItem("takju", 0);
   localStorage.setItem("chungju", 0);
@@ -93,11 +107,11 @@ const SBTIMain = () => {
 
   useEffect(() => {
     const userInfo = async () => {
-      const rsp = await AxiosApi.userNumber("10000001");
+      const rsp = await AxiosApi.userNumber(userNum);
       if (rsp.status === 200) setUserInfo(rsp.data);
     };
     userInfo();
-  }, []);
+  }, [userNum]);
   useEffect(() => {
     const storageIconRef = ref(storage, "Icons");
 
@@ -107,7 +121,7 @@ const SBTIMain = () => {
     ])
       .then((urls) => {
         setImageUrls(urls);
-        console.log(imageUrls);
+        // console.log(imageUrls);
       })
       .catch((error) => {
         console.error("아이콘 이미지 로딩 실패!!", error);
@@ -122,14 +136,7 @@ const SBTIMain = () => {
             술BTI 검사
           </span>
           <Xbox>
-            <img
-              className="close"
-              src={imageUrls[0]}
-              alt="x"
-              onClick={() => {
-                navigate("/");
-              }}
-            />
+            <img className="close" src={imageUrls[0]} alt="x" onClick={() => {navigate("/");}}/>
           </Xbox>
         </Top>
         <div>
@@ -141,9 +148,8 @@ const SBTIMain = () => {
         <div>
           {userInfo.map((user) => (
             <div key={user.user_no}>
-              <p>
-                {user.user_name}님의 기존 SBTI 결과: {user.user_sbti}
-              </p>
+              <p>{user.user_name}님의 기존 SBTI 결과:</p>
+              <p className="sbtiresult">"{user.user_sbti}"</p>
             </div>
           ))}
         </div>
