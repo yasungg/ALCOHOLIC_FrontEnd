@@ -3,14 +3,13 @@ import styled from "styled-components";
 import AxiosApi from "../api/AxiosApi";
 import HeaderDesign from "../HeaderDesign";
 import FooterDesign from "../FooterDesign";
-import { UpBtn } from "../component/ReusableComponents";
+import { UpBtn, Sidebar } from "../component/ReusableComponents";
 import ImageUploader from "../component/UploadImage";
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-evenly;
   width: 100%;
 `;
 const BottomBox = styled.div`
@@ -158,6 +157,7 @@ const Event = () => {
   return (
     <Container>
       <HeaderDesign />
+      <Sidebar height="100%" />
       <Events>
         <button
           className={`eventbutton ${isIngEventButtonClicked ? "active" : ""}`}

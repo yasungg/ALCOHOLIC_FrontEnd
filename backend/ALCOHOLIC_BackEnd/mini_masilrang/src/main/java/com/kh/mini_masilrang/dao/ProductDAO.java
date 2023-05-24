@@ -64,9 +64,9 @@ public class ProductDAO {
                 ProductVO vo = new ProductVO();
                 int product_no = rs.getInt("PRODUCT_NO");
                 String product_name = rs.getString("PRODUCT_NAME");
+                String product_img = rs.getString("PRODUCT_IMG");
                 String content1 = rs.getString("CONTENT1");
                 String content2 = rs.getString("CONTENT2");
-                String product_img = rs.getString("PRODUCT_IMG");
                 vo.setProduct_no(product_no);
                 vo.setProduct_name(product_name);
                 vo.setContent1(content1);

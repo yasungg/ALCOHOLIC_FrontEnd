@@ -13,7 +13,6 @@ import RecmdPage from "./Pages/RecmdPage";
 import Product from "./Pages/Product";
 import UserStore from "./api/Context";
 import ProductSearch from "./component/ProductSearch";
-import firebase from "firebase/compat/app";
 import SBTIMain from "./Pages/SBTIMain";
 import SBTIStartQuestion1 from "./Pages/SBTIpages/SBTIStartQuestion1";
 import SBTIStartQuestion2 from "./Pages/SBTIpages/SBTIStartQuestion2";
@@ -45,6 +44,7 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" element={<Main />} />
+          <Route path="/ProductSearch/:sword" element={<ProductSearch />} />
           <Route path="/MyPage" element={<MyPage />} />
           <Route path="/SignUp" element={<SignUp />} />
           <Route path="/Login" element={<Login />} />
@@ -55,7 +55,6 @@ function App() {
           <Route path="/FindPw" element={<FindPw />} />
           <Route path="/RecmdPage" element={<RecmdPage />} />
           <Route path="/Product/:product_no" element={<Product />} />
-          <Route path="/ProductSearch" element={<ProductSearch />} />
           <Route path="/SBTIMain" element={<SBTIMain />} />
           <Route path="/SBTIStartQuestion1" element={<SBTIStartQuestion1 />} />
           <Route path="/SBTIStartQuestion2" element={<SBTIStartQuestion2 />} />

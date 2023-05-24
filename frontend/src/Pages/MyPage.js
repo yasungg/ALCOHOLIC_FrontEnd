@@ -4,6 +4,9 @@ import TMP from "../Image/벚꽃.png";
 import rightArrow from "../Image/angle-right.png";
 import { UpBtn } from "../component/ReusableComponents";
 import { useNavigate } from "react-router-dom";
+import { UserContext } from "../api/Context";
+import { useState, useEffect, useContext } from "react";
+import AxiosApi from "../api/AxiosApi";
 
 const Container = styled.div`
   width: 100%;
@@ -142,6 +145,28 @@ const FooterDiv = styled.div`
 
 const MyPage = () => {
   const navigate = useNavigate();
+  const { userNum, isLogin } = useContext(UserContext);
+  const [userInfo, setUserInfo] = useState([]);
+  const [isNull, setIsNull] = useState(false);
+  useEffect(() => {
+    const getName = async (num) => {
+      if (isLogin) {
+        try {
+          const responseNum = await AxiosApi.userNumber(num);
+          console.log(responseNum.data);
+          setUserInfo(responseNum.data);
+        } catch (error) {
+          console.error("유저 정보 불러오기 실패!!", error);
+          console.log(userNum);
+        }
+        if (userInfo.user_sbti == null) setIsNull(true);
+      } else if (!isLogin) {
+        setUserInfo([]);
+      }
+    };
+    getName(userNum);
+  }, [isLogin]);
+
   return (
     <Container>
       <HeaderDesign />
@@ -152,12 +177,21 @@ const MyPage = () => {
             alt="임시"
             onClick={() => navigate("/SBTIMain")}
           />
-          <UserDesc>
-            <p>순이둥이님 환영합니다.</p>
-            <p>1998.10.25</p>
-            <p>남성</p>
-            <p>술 취향</p>
-          </UserDesc>
+          {userInfo.map((e) => (
+            <UserDesc key={e.user_no}>
+              <p>{e.user_name}님 환영합니다.</p>
+              <p>연락처 : {e.user_phone}</p>
+              <p>등록 이메일 : {e.user_email}</p>
+              <p>
+                술 취향 :&nbsp;
+                {isNull ? (
+                  <span>아직 술bti 검사가 이루어지지 않은 회원입니다.</span>
+                ) : (
+                  e.user_sbti
+                )}
+              </p>
+            </UserDesc>
+          ))}
         </UserCard>
         <ModifyBtn onClick={() => navigate("/MemberUpdate")}>
           <span>회원정보 수정</span>

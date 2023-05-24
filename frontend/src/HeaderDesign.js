@@ -6,6 +6,8 @@ import { ref, getDownloadURL } from "firebase/storage";
 import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "./api/Context";
 import AxiosApi from "./api/AxiosApi";
+import DehazeSharpIcon from "@mui/icons-material/DehazeSharp";
+import SearchIcon from "@mui/icons-material/Search";
 
 const initialminWidth = "120px";
 const changedminWidth = "220px";
@@ -30,7 +32,7 @@ const Header = styled.div`
       display: none;
     }
     .HamburgerBtn {
-      display: block;
+      display: flex;
     }
   }
 `;
@@ -85,7 +87,7 @@ const SearchBox = styled.div`
   height: 40px;
   background: white;
   display: flex;
-  border: 2px solid rgba(223, 214, 210);
+  border: 2px solid rgb(223, 214, 210);
   border-radius: 10px;
   #search {
     width: 350px;
@@ -150,22 +152,29 @@ const UserButtons = styled.button`
 const HamburgerBtn = styled.button`
   width: 3rem;
   height: 3rem;
+  margin-right: 20px;
   padding: 0;
   display: none;
+  border: none;
+  border-radius: 3px;
+  color: white;
+  outline: none;
+  justify-content: center;
+  align-items: center;
   background: rgb(223, 214, 210);
-  img {
-    width: 2rem;
-    height: 2rem;
-    background-color: white;
+  &:active {
+    background: rgb(193, 159, 138);
+    border: none;
   }
 `;
 
 const HeaderDesign = () => {
   const [imageUrls, setImageUrls] = useState([]); // 아이콘 이미지의 파이어베이스 URL을 담은 useState
   const navigate = useNavigate(); // Navigate bar를 위한 useNavigate
-  const { isLogin, contextLogout, userNum } = useContext(UserContext); // 로그인 관리를 위한 Context API
-  const [userName, setUserName] = useState("");
-  const [inputProductName, setInputProductName] = useState("");
+  const { isLogin, contextLogout, userNum, isSidebar, setIsSidebar } =
+    useContext(UserContext); // 로그인 관리를 위한 Context API
+  const [userName, setUserName] = useState(""); // 로그인 후 유저정보(이름) 저장을 위한 useState
+  const [sword, setSword] = useState(""); // 검색어 입력을 위한 useState
   useEffect(() => {
     // 파이어베이스를 이용한 홈페이지 아이콘 렌더링
     const storageIconRef = ref(storage, "Icons");
@@ -173,7 +182,7 @@ const HeaderDesign = () => {
     Promise.all([
       getDownloadURL(ref(storageIconRef, "logo.jpg")), // 로고 이미지
       getDownloadURL(ref(storageIconRef, "SearchIcon.png")), // 검색 버튼 이미지
-      getDownloadURL(ref(storageIconRef, "HamburgerBtn.png")), // 햄버거 버튼 이미지
+      getDownloadURL(ref(storageIconRef, "HamburgerBtn.png")), // 햄버거 버튼 이미지4
     ])
       .then((urls) => {
         setImageUrls(urls);
@@ -204,11 +213,12 @@ const HeaderDesign = () => {
     navigate("/");
   };
   const onChangeProductName = (e) => {
-    setInputProductName(e.target.value);
+    setSword(e.target.value);
   };
   const swordPush = () => {
-    navigate(`/ProductSearch?sword=${inputProductName}`);
+    navigate(`/ProductSearch/${sword}`);
   };
+
   return (
     <Header>
       <HeaderContainer>
@@ -220,12 +230,12 @@ const HeaderDesign = () => {
         <SearchBox className="searchBox">
           <input
             type="text"
-            value={inputProductName}
+            value={sword}
             id="search"
             onChange={onChangeProductName}
           />
           <button className="searchBtn" type="submit" onClick={swordPush}>
-            <img src={imageUrls[1]} className="searchBtnIcon" alt="돋" />
+            <SearchIcon />
           </button>
         </SearchBox>
         {isLogin ? (
@@ -256,9 +266,11 @@ const HeaderDesign = () => {
             </UserButtons>
           </UserMenu>
         )}
-
-        <HamburgerBtn className="HamburgerBtn">
-          <img src={imageUrls[2]} alt="" />
+        <HamburgerBtn
+          className="HamburgerBtn"
+          onClick={() => setIsSidebar(true)}
+        >
+          <DehazeSharpIcon />
         </HamburgerBtn>
       </HeaderContainer>
       <HeaderNavi>

@@ -4,12 +4,13 @@ import AxiosApi from "../api/AxiosApi";
 import Modal from "../utils/Modal";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-
+import { LogoHomeBtn } from "../component/ReusableComponents";
 const Container = styled.div`
   display: flex;
   flex-wrap: wrap;
   flex-direction: column;
   justify-content: space-evenly;
+  padding-top: 50px;
   width: 100%;
   height: 100%;
   .sign {
@@ -20,6 +21,7 @@ const Container = styled.div`
     font-weight: bold;
     letter-spacing: 0px;
     color: rgb(193, 159, 138);
+    margin-top: 40px;
     opacity: 1;
   }
   .hr {
@@ -249,6 +251,7 @@ const SignUp = () => {
 
   return (
     <Container>
+      <LogoHomeBtn />
       <div className="sign">
         <span>회원 가입</span>
       </div>

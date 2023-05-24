@@ -66,7 +66,7 @@ const Banner = () => {
   `;
   const CardImg = styled.img`
     width: 100%;
-    height: 100%;
+    height: 300px;
   `;
   return (
     <BannerContainer>

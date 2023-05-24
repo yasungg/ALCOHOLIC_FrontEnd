@@ -1,12 +1,17 @@
 import styled from "styled-components";
 import { useState, useEffect, useContext } from "react";
-import firebase from "firebase/compat/app";
-import { getStorage, ref, getDownloadURL } from "firebase/storage";
+import { storage } from "../api/firebase";
+import { ref, getDownloadURL } from "firebase/storage";
 import { useNavigate } from "react-router-dom";
 import HeaderDesign from "../HeaderDesign";
 import FooterDesign from "../FooterDesign";
 import AxiosApi from "../api/AxiosApi";
-import { UpBtn } from "../component/ReusableComponents";
+import { UpBtn, Sidebar } from "../component/ReusableComponents";
+import LocalFloristIcon from "@mui/icons-material/LocalFlorist";
+import EscalatorWarningIcon from "@mui/icons-material/EscalatorWarning";
+import CelebrationIcon from "@mui/icons-material/Celebration";
+import BrunchDiningIcon from "@mui/icons-material/BrunchDining";
+import FestivalIcon from "@mui/icons-material/Festival";
 
 const initialMinheight = "200px";
 const changedMinheight = "295px";
@@ -170,13 +175,20 @@ const ThemeCard = styled.button`
     margin: none;
   }
 `;
-const ThemeCardImg = styled.img`
+const ThemeCardImg = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
   width: 90px;
   height: 90px;
   min-width: 90px;
   background: rgb(193, 159, 138);
   border-radius: 5px;
   align-self: center;
+  .icons {
+    font-size: 64px;
+  }
 `;
 const ThemeCardDesc = styled.div`
   display: flex;
@@ -449,31 +461,41 @@ const RecmdPage = () => {
           {isSecondBtnClicked && (
             <ThemeCardDiv>
               <ThemeCard onClick={clickFirstOne}>
-                <ThemeCardImg />
+                <ThemeCardImg>
+                  <LocalFloristIcon className="icons" />
+                </ThemeCardImg>
                 <ThemeCardDesc>
                   <span>#봄소풍</span>
                 </ThemeCardDesc>
               </ThemeCard>
               <ThemeCard onClick={clickSecondOne}>
-                <ThemeCardImg />
+                <ThemeCardImg>
+                  <EscalatorWarningIcon className="icons" />
+                </ThemeCardImg>
                 <ThemeCardDesc>
                   <span>#어버이날</span>
                 </ThemeCardDesc>
               </ThemeCard>
               <ThemeCard onClick={clickThirdOne}>
-                <ThemeCardImg />
+                <ThemeCardImg>
+                  <CelebrationIcon className="icons" />
+                </ThemeCardImg>
                 <ThemeCardDesc>
                   <span>#기념일</span>
                 </ThemeCardDesc>
               </ThemeCard>
               <ThemeCard onClick={clickForthOne}>
-                <ThemeCardImg />
+                <ThemeCardImg>
+                  <BrunchDiningIcon className="icons" />
+                </ThemeCardImg>
                 <ThemeCardDesc>
                   <span>#홈파티</span>
                 </ThemeCardDesc>
               </ThemeCard>
               <ThemeCard onClick={clickFifthOne}>
-                <ThemeCardImg />
+                <ThemeCardImg>
+                  <FestivalIcon className="icons" />
+                </ThemeCardImg>
                 <ThemeCardDesc>
                   <span>#감성캠핑</span>
                 </ThemeCardDesc>
@@ -609,6 +631,7 @@ const RecmdPage = () => {
         </BottomBox>
       </BodyContainer>
       <FooterDesign />
+      <Sidebar height="100%" />
     </Container>
   );
 };

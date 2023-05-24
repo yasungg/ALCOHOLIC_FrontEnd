@@ -6,10 +6,11 @@ import React, { useState, useEffect, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { storage } from "../api/firebase";
 import { ref, getDownloadURL } from "firebase/storage";
-import DescBoxIcon1 from "../Image/부모님.png";
-import DescBoxIcon2 from "../Image/벚꽃.png";
-import { UpBtn } from "../component/ReusableComponents";
+import { UpBtn, Sidebar } from "../component/ReusableComponents";
 import Modal from "../utils/Modal";
+import AxiosApi from "../api/AxiosApi";
+import { UserContext } from "../api/Context";
+import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 
 const Container = styled.div`
   // 전체 영역을 설정 flexbox로 배치할 때 기준이 필요할 것이라 생각했기 때문
@@ -90,7 +91,9 @@ const DownBlanc = styled.div`
   justify-content: center;
   align-items: center;
 `;
+
 const Main = () => {
+  const { userNum, isLogin, setIsSidebar } = useContext(UserContext);
   const [iconUrls, setIconUrls] = useState([]);
   const navigate = useNavigate();
 
@@ -108,6 +111,7 @@ const Main = () => {
       .catch((error) => {
         console.log(error);
       });
+    setIsSidebar(false);
   }, []);
 
   return (
@@ -144,6 +148,7 @@ const Main = () => {
         <UpBtn />
       </DownBlanc>
       <FooterDesign />
+      <Sidebar height="100%" />
     </Container>
   );
 };

@@ -6,6 +6,7 @@ import { KAKAO_AUTH_URL } from "../component/OAuth";
 import KaKaoLogin from "../component/KaKaoLogin";
 import KakaoIcon from "../Image/KakaoIcon.png";
 import { UserContext } from "../api/Context";
+import { LogoHomeBtn } from "../component/ReusableComponents";
 
 const Container = styled.div`
   display: flex;
@@ -22,7 +23,6 @@ const Container = styled.div`
     color: #c19f8a;
     font-weight: bold;
     margin-bottom: 20px;
-    margin-top: 50px;
   }
   .item {
     display: flex;
@@ -109,7 +109,13 @@ const Find = styled.div`
     color: rgba(223, 214, 210);
   }
 `;
-
+const TopContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 200px;
+`;
 const Login = () => {
   //네비게이터
   const navigate = useNavigate();
@@ -150,6 +156,9 @@ const Login = () => {
 
   return (
     <Container>
+      <TopContainer>
+        <LogoHomeBtn />
+      </TopContainer>
       <div className="Login">
         <span>로그인</span>
       </div>

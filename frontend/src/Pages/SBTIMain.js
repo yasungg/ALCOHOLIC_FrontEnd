@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import AxiosApi from "../api/AxiosApi";
 import { storage } from "../api/firebase";
-import { getStorage, ref, getDownloadURL } from "firebase/storage";
+import { ref, getDownloadURL } from "firebase/storage";
 
 const OutBox = styled.div`
   display: flex;

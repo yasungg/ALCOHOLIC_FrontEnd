@@ -99,7 +99,14 @@ const AxiosApi = {
   },
   // 상품 검색
   searchResultGet: async (productname) => {
-    return await axios.get(KH_DOMAIN + `/search?productname=${productname}`);
+    try {
+      const searchResultRsp = axios.get(
+        KH_DOMAIN + `/search?productname=${productname}`
+      );
+      return (await searchResultRsp).data;
+    } catch (error) {
+      console.error("검색 결과 불러오기 실패!!", error);
+    }
   },
   sbtiQuestion: async (number) => {
     return await axios.get(KH_DOMAIN + `/sbti?number=${number}`);
