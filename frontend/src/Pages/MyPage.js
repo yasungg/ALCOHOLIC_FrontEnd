@@ -4,9 +4,9 @@ import TMP from "../Image/벚꽃.png";
 import rightArrow from "../Image/angle-right.png";
 import { UpBtn } from "../component/ReusableComponents";
 import { useNavigate } from "react-router-dom";
-import { UserContext } from "../api/Context";
-import { useState, useEffect, useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import AxiosApi from "../api/AxiosApi";
+import { UserContext } from "../api/Context";
 
 const Container = styled.div`
   width: 100%;
@@ -171,14 +171,13 @@ const MyPage = () => {
     <Container>
       <HeaderDesign />
       <MyPageContainer>
-        <UserCard>
-          <ProfilePicture
-            src={TMP}
-            alt="임시"
+      {userInfo.map((e) => (
+        <UserCard key={e.user_no}>
+          <ProfilePicture 
+            src={e.user_profile}
             onClick={() => navigate("/SBTIMain")}
           />
-          {userInfo.map((e) => (
-            <UserDesc key={e.user_no}>
+            <UserDesc>
               <p>{e.user_name}님 환영합니다.</p>
               <p>연락처 : {e.user_phone}</p>
               <p>등록 이메일 : {e.user_email}</p>
@@ -191,8 +190,8 @@ const MyPage = () => {
                 )}
               </p>
             </UserDesc>
-          ))}
         </UserCard>
+                  ))}
         <ModifyBtn onClick={() => navigate("/MemberUpdate")}>
           <span>회원정보 수정</span>
         </ModifyBtn>

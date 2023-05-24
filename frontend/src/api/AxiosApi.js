@@ -124,5 +124,21 @@ const AxiosApi = {
   sbtiRecommend: async (category) => {
     return await axios.get(KH_DOMAIN + `/sbtirecommend?cat=${category}`);
   },
+   //메인 상품
+  mainProductGet : async(thema) => {
+    return await axios.get(KH_DOMAIN + `/mainProduct?thema=${thema}`)
+  },
+  //메인 상품2
+  mainProductGet2 : async(thema) => {
+    return await axios.get(KH_DOMAIN + `/mainProduct2?thema=${thema}`)
+  },
+  //프로필 업데이트
+  uploadProfileImage : async(url, userNum) => {
+    const profileImage = {
+      url : url,
+      userNum : userNum
+    };
+    return await axios.post(KH_DOMAIN + "/profileImageUpload", profileImage);
+  }
 };
 export default AxiosApi;

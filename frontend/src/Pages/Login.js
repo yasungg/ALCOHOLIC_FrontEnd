@@ -1,12 +1,12 @@
 import React, { useState, useContext } from "react";
 import styled from "styled-components";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import AxiosApi from "../api/AxiosApi";
 import { KAKAO_AUTH_URL } from "../component/OAuth";
 import KaKaoLogin from "../component/KaKaoLogin";
 import KakaoIcon from "../Image/KakaoIcon.png";
 import { UserContext } from "../api/Context";
-import { LogoHomeBtn } from "../component/ReusableComponents";
+import Modal from "../utils/Modal";
 
 const Container = styled.div`
   display: flex;
@@ -23,6 +23,7 @@ const Container = styled.div`
     color: #c19f8a;
     font-weight: bold;
     margin-bottom: 20px;
+    margin-top: 50px;
   }
   .item {
     display: flex;
@@ -109,13 +110,7 @@ const Find = styled.div`
     color: rgba(223, 214, 210);
   }
 `;
-const TopContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 200px;
-`;
+
 const Login = () => {
   //네비게이터
   const navigate = useNavigate();
@@ -140,7 +135,6 @@ const Login = () => {
   };
   const onClickLogin = async () => {
     // 로그인을 위해 axios 호출
-    try {
       const response1 = await AxiosApi.memberLogin(inputId, inputPw);
       const response2 = await AxiosApi.memberGet(inputId);
       const rst = response2.data;
@@ -149,16 +143,26 @@ const Login = () => {
         setUserNum(rst[0].user_no);
         navigate("/");
       }
-    } catch (error) {
-      console.error("로그인 에러", error);
+      else {
+      setModalOpen(true);
+      setModalText("로그인에 실패하였습니다.")
+
     }
   };
+  // 팝업처리(모달)
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalText, setModalText] = useState("");
+
+  const confirmBtn = () => {
+    setModalOpen(false);
+    console.log("확인 버튼이 눌려 졌습니다.");
+ }
+  const closeModal = () => {
+    setModalOpen(false);
+};
 
   return (
     <Container>
-      <TopContainer>
-        <LogoHomeBtn />
-      </TopContainer>
       <div className="Login">
         <span>로그인</span>
       </div>
@@ -178,12 +182,8 @@ const Login = () => {
       </div>
 
       <Find>
-        <Link to="/FindId">
-          <button className="findbutton">아이디 찾기</button>
-        </Link>
-        <Link to="/FindPw">
-          <button className="findbutton">비밀번호 찾기</button>
-        </Link>
+      <button className="findbutton" onClick={()=> navigate("/FindId")}>아이디 찾기</button>
+      <button className="findbutton"onClick={()=> navigate("/FindPw")}>비밀번호 찾기</button>
       </Find>
       <div className="item2">
         {isId && isPw ? (
@@ -196,11 +196,10 @@ const Login = () => {
         ) : (
           <button className="login-disable-button">로그인</button>
         )}
+      <Modal open={modalOpen} type={true} confirm={confirmBtn} close={closeModal} header="로그인 오류">{modalText}</Modal>
       </div>
       <div className="item2">
-        <Link to="/SignUp">
-          <button className="signbutton">회원가입</button>
-        </Link>
+      <button className="signbutton" onClick={()=> navigate("/SignUp")}>회원가입</button>
         <KaKaoLogin />
       </div>
     </Container>

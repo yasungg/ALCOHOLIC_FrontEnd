@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import styled from "styled-components";
 import AxiosApi from "../api/AxiosApi";
+import ProfileImageUploader from "../component/ProfileUploadImage";
+import { UserContext } from "../api/Context";
 
 const Container = styled.div`
   display: flex;
@@ -106,6 +108,7 @@ const MemberUpdate = () => {
   const [isMail, setIsMail] = useState(false);
   const [isPhone, setIsPhone] = useState(false);
 
+  const { userNum } = useContext(UserContext); // 로그인 관리를 위한 Context API
   const onChangeExistPw = (e) => {
     setExistPw(e.target.value);
   };
@@ -270,6 +273,12 @@ const MemberUpdate = () => {
           value={inputPhone}
           onChange={onChangePhone}
         />
+      </div>
+      <div className="item">
+        <label className="label" for="imageupload">
+          프로필 사진 업데이트
+        </label>
+        <ProfileImageUploader />
       </div>
       <hr className="hr" />
       <div className="item">

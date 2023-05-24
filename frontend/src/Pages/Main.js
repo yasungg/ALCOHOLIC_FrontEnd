@@ -3,14 +3,14 @@ import FooterDesign from "../FooterDesign";
 import Banner from "../Banner";
 import styled from "styled-components";
 import React, { useState, useEffect, useContext } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { storage } from "../api/firebase";
 import { ref, getDownloadURL } from "firebase/storage";
-import { UpBtn, Sidebar } from "../component/ReusableComponents";
+import DescBoxIcon1 from "../Image/부모님.png";
+import DescBoxIcon2 from "../Image/벚꽃.png";
+import { UpBtn } from "../component/ReusableComponents";
 import Modal from "../utils/Modal";
 import AxiosApi from "../api/AxiosApi";
-import { UserContext } from "../api/Context";
-import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 
 const Container = styled.div`
   // 전체 영역을 설정 flexbox로 배치할 때 기준이 필요할 것이라 생각했기 때문
@@ -53,9 +53,9 @@ const DescBox = styled.div`
 const DivBox = styled.div`
   // 카드를 담을 플렉스박스
   width: 1024px; // 반응형 웹을 고려해 1024px로 설정.
-  height: 350px;
+  height: 380px;
   display: flex;
-  flex-flow: row wrap;
+  flex-flow: nowrap;
   justify-content: space-between;
   align-self: center;
   @media screen and (max-width: 1024px) {
@@ -64,12 +64,21 @@ const DivBox = styled.div`
   }
 `;
 const Card = styled.div`
+  display: flex;
+  flex-direction: column;
   width: 220px;
   height: 98%;
-  align-self: flex-end;
-  background: rgb(193, 159, 138);
+  align-self: space-evenly;
+  /* background: rgb(193, 159, 138); */
+  background: white;
+  border: 0.5px solid rgb(193, 159, 138);
+  /* border: none; */
   border-radius: 10px;
   cursor: pointer;
+  &:hover {
+    transform: translate(0, -5px);
+  }
+  
   &:hover {
     transform: translate(0, -5px);
   }
@@ -91,10 +100,37 @@ const DownBlanc = styled.div`
   justify-content: center;
   align-items: center;
 `;
-
+const CardImg = styled.img`
+  width: 200px;
+  height: 200px;
+  border: none;
+  outline: none;
+  margin-top: 10px;
+  border-radius: 10px;
+  align-self: center;
+`;
+const CardTitle = styled.div`
+  margin-left: 16px;
+`;
+const CardDesc = styled.div`
+  font-size: 0.9em;
+  width: 90%;
+  height: 35px;
+  align-self: center;
+  padding-top: 8px;
+  border-top: 0.5px solid rgb(193, 159, 138);
+  color: #495057;
+`;
+const CardTag = styled.div`
+  width: 90%;
+  color: #495057;
+  font-size: 0.9em;
+  align-self: center;
+`;
 const Main = () => {
-  const { userNum, isLogin, setIsSidebar } = useContext(UserContext);
   const [iconUrls, setIconUrls] = useState([]);
+  const [mainProduct, setmainProduct] = useState([]);
+  const [mainProduct2, setmainProduct2] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -111,8 +147,28 @@ const Main = () => {
       .catch((error) => {
         console.log(error);
       });
-    setIsSidebar(false);
   }, []);
+  useEffect(() => {
+    const mainProductSeen = async () => {
+      const rsp = await AxiosApi.mainProductGet("어버이날");
+      if (rsp.status === 200) setmainProduct(rsp.data);
+      console.log(rsp.data);
+    };
+  
+    mainProductSeen();
+  }, []);
+  useEffect(() => {
+    const mainProductSeen2 = async () => {
+      const rsp = await AxiosApi.mainProductGet2("봄소풍");
+      if (rsp.status === 200) setmainProduct2(rsp.data);
+      console.log(rsp.data);
+    };
+  
+    mainProductSeen2();
+  }, []);
+  const cardClick = (product_no) => {
+    navigate(`/Product/${product_no}`);
+  };
 
   return (
     <Container>
@@ -125,12 +181,21 @@ const Main = () => {
         </p>
         <p className="descBoxP2">이 술은 어때요?</p>
       </DescBox>
-      <DivBox>
-        <Card className="card"></Card>
-        <Card className="card"></Card>
-        <Card className="card"></Card>
-        <Card className="card"></Card>
+      
+      <DivBox >
+        {(mainProduct).map((product)=> (
+        <Card className="card" key={product.product_no} onClick={() => cardClick(product.product_no)}>
+          <CardImg src={product.product_img} />
+                <CardTitle>
+                  <h4>{product.product_name}</h4>
+                </CardTitle>
+                <CardDesc>{product.content1}</CardDesc>
+                <CardTag>{product.content2}</CardTag>
+        </Card>
+           ))}
       </DivBox>
+   
+
       <DescBox>
         <p className="descBoxP1">
           <img src={iconUrls[1]} alt="이미지" />
@@ -139,16 +204,21 @@ const Main = () => {
         <p className="descBoxP2">꽃놀이를 우리 술과 함께 즐겨요!</p>
       </DescBox>
       <DivBox className="divBox2">
-        <Card className="card"></Card>
-        <Card className="card"></Card>
-        <Card className="card"></Card>
-        <Card className="card"></Card>
+      {(mainProduct2).map((product)=> (
+        <Card className="card" key={product.product_no} onClick={() => cardClick(product.product_no)}>
+          <CardImg src={product.product_img} />
+                <CardTitle>
+                  <h4>{product.product_name}</h4>
+                </CardTitle>
+                <CardDesc>{product.content1}</CardDesc>
+                <CardTag>{product.content2}</CardTag>
+        </Card>
+           ))}
       </DivBox>
       <DownBlanc>
         <UpBtn />
       </DownBlanc>
       <FooterDesign />
-      <Sidebar height="100%" />
     </Container>
   );
 };
