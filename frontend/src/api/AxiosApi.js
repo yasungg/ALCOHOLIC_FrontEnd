@@ -139,6 +139,22 @@ const AxiosApi = {
       userNum : userNum
     };
     return await axios.post(KH_DOMAIN + "/profileImageUpload", profileImage);
+  },
+  // 관심 상품 추가
+  insertProduct : async(userNum, productNum) => {
+    const likeProduct = {
+      userNum : userNum,
+      productNum : productNum,
+    };
+    return await axios.post(KH_DOMAIN + "/insertLikeProduct", likeProduct);
+  },
+  // 관심 상품 보여주기
+  likeProductGet : async(userNo) => {
+    return await axios.get(KH_DOMAIN + `/likeProduct?userNo=${userNo}`)
+  },
+  // 관심 상품 하트 표시
+  getCheckHeart : async(product_no, userNum) => {
+    return await axios.get(KH_DOMAIN+ `/checkHeart?product_no=${product_no}&userNum=${userNum}`)
   }
 };
 export default AxiosApi;

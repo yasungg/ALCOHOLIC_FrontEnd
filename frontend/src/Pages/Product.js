@@ -1,10 +1,11 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useContext } from "react";
 import styled from "styled-components";
 import product1 from "../Image/product1.jpg";
 import point1 from "../Image/point1.jpeg";
 import AxiosApi from "../api/AxiosApi";
 import { useParams } from "react-router-dom";
 import HeaderDesign from "../HeaderDesign";
+import { UserContext } from "../api/Context";
 
 const Container = styled.div`
   width: 100%;
@@ -133,7 +134,7 @@ const Btn = styled.div`
   display: flex;
   justify-content: flex-end;
 
-  #likebtn {
+  .likebtn {
     padding: 0 10px;
     text-align: center;
     width: 50px;
@@ -145,7 +146,18 @@ const Btn = styled.div`
     margin-right: 20px;
     cursor: pointer;
   }
-
+  .liked {
+    background-color: red;
+    padding: 0 10px;
+    text-align: center;
+    width: 50px;
+    height: 40px;
+    border-radius: 3px;
+    color: #333;
+    border: 1px solid #ddd;
+    margin-right: 20px;
+    cursor: pointer;
+  }
   #cartbtn {
     padding: 0 10px;
     text-align: center;
@@ -200,6 +212,8 @@ const TabMenu = styled.ul`
 
 const Detail = () => {
   const { product_no } = useParams();
+  const { userNum } = useContext(UserContext); // 로그인 관리를 위한 Context API
+  const [isProductLiked, setProductLiked] = useState(false);
   const [productDetail, setProductDetail] = useState([]);
   const [currentTab, setCurrentTab] = useState(0);
   const tabMenuRef = useRef();
@@ -233,6 +247,32 @@ const Detail = () => {
     }
   };
 
+  const InsertLikeProduct = async () => {
+  console.log(product_no);
+  console.log(userNum);
+  try {
+    const response = await AxiosApi.insertProduct(product_no, userNum);
+    if (response.data === true) {
+      console.log(response.data);
+      setProductLiked(true); // 제품이 추가되었으므로 상태를 true로 업데이트합니다.
+    } else {
+      console.log(response.data);
+    }
+  } catch (error) {
+    console.error("실패!!", error);
+  };
+  };
+  useEffect(() => {
+    const checkHeart = async() => {
+      const response = await AxiosApi.getCheckHeart(product_no, userNum);
+      if(response.data === true) {
+        setProductLiked(true);
+      } else {
+        setProductLiked(false);
+      }
+    };
+    checkHeart();
+  },[])
   return (
     <Container>
       <HeaderDesign />
@@ -252,7 +292,7 @@ const Detail = () => {
                 <li className="item1">용량 : {detail.capacity}</li>
               </Category>
               <Btn>
-                <button type="button" id="likebtn">
+                <button onClick={InsertLikeProduct} type="button" className={isProductLiked ? "liked" : "likebtn"}>
                   ♡
                 </button>
                 <button type="button" id="cartbtn">

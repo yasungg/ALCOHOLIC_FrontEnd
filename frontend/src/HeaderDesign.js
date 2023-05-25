@@ -50,6 +50,24 @@ const HeaderNavi = styled.div`
   height: 27%;
   justify-content: center;
   border-bottom: 0.5px solid rgb(223, 214, 210);
+  .NavisearchBox {
+    display: none;
+  }
+  @media screen and (max-width: 768px) {
+    justify-content: flex-start;
+    align-items: center;
+    padding-left: 8px;
+    .NavisearchBox {
+      display: flex;
+      width: 220px;
+      height: 30px;
+      border: 1px solid rgb(223, 214, 210);
+      border-radius: 3px;
+      #search {
+        height: 25px;
+      }
+    }
+  }
 `;
 const NaviButtons = styled.button`
   width: 130px;
@@ -61,6 +79,9 @@ const NaviButtons = styled.button`
   box-shadow: none;
   color: #495057;
   cursor: pointer;
+  @media screen and (max-width: 768px) {
+    display: none;
+  }
   &:hover {
     color: rgb(223, 214, 210);
     transition: all 0.5s;
@@ -171,8 +192,14 @@ const HamburgerBtn = styled.button`
 const HeaderDesign = () => {
   const [imageUrls, setImageUrls] = useState([]); // 아이콘 이미지의 파이어베이스 URL을 담은 useState
   const navigate = useNavigate(); // Navigate bar를 위한 useNavigate
-  const { isLogin, contextLogout, userNum, isSidebar, setIsSidebar } =
-    useContext(UserContext); // 로그인 관리를 위한 Context API
+  const {
+    isLogin,
+    contextLogout,
+    userNum,
+    isSidebar,
+    setIsSidebar,
+    sideBarOpen,
+  } = useContext(UserContext); // 로그인 관리를 위한 Context API
   const [userName, setUserName] = useState(""); // 로그인 후 유저정보(이름) 저장을 위한 useState
   const [sword, setSword] = useState(""); // 검색어 입력을 위한 useState
   useEffect(() => {
@@ -288,9 +315,20 @@ const HeaderDesign = () => {
         <NaviButtons onClick={() => navigate("/Event")}>
           <span>이벤트</span>
         </NaviButtons>
+        <SearchBox className="NavisearchBox">
+          <input
+            type="text"
+            value={sword}
+            id="search"
+            onChange={onChangeProductName}
+          />
+          <button className="searchBtn" type="submit" onClick={swordPush}>
+            <SearchIcon />
+          </button>
+        </SearchBox>
       </HeaderNavi>
     </Header>
   );
 };
 
-export default HeaderDesign;
+export default HeaderDesign; // 헤더디자인

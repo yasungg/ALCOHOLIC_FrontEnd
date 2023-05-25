@@ -143,11 +143,85 @@ const FooterDiv = styled.div`
   align-items: center;
 `;
 
+const Card = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 220px;
+  height: 98%;
+  align-self: space-evenly;
+  /* background: rgb(193, 159, 138); */
+  background: white;
+  border: 0.5px solid rgb(193, 159, 138);
+  /* border: none; */
+  border-radius: 10px;
+  cursor: pointer;
+  &:hover {
+    transform: translate(0, -5px);
+  }
+  
+  &:hover {
+    transform: translate(0, -5px);
+  }
+  @media screen and (max-width: 1024px) {
+    &:nth-child(4) {
+      display: none;
+    }
+  }
+  @media screen and (max-width: 768px) {
+    &:nth-child(3) {
+      display: none;
+    }
+  }
+`;
+const ProductBodyBox = styled.div`
+  width: 100%;
+  height: 380px;
+  border: 1px solid rgba(223, 214, 210);
+  border-radius: 10px;
+  display: flex;
+  flex-flow: nowrap;
+  justify-content: space-evenly;
+  align-self: center;
+  @media screen and (max-width: 1024px) {
+    width: 100vw;
+    justify-content: space-evenly;
+  }
+`;
+const CardImg = styled.img`
+  width: 200px;
+  height: 200px;
+  border: none;
+  outline: none;
+  margin-top: 10px;
+  border-radius: 10px;
+  align-self: center;
+`;
+
+const CardTitle = styled.div`
+  margin-left: 16px;
+`;
+const CardDesc = styled.div`
+  font-size: 0.9em;
+  width: 90%;
+  height: 35px;
+  align-self: center;
+  padding-top: 8px;
+  border-top: 0.5px solid rgb(193, 159, 138);
+  color: #495057;
+`;
+const CardTag = styled.div`
+  width: 90%;
+  color: #495057;
+  font-size: 0.9em;
+  align-self: center;
+`;
+
 const MyPage = () => {
   const navigate = useNavigate();
   const { userNum, isLogin } = useContext(UserContext);
   const [userInfo, setUserInfo] = useState([]);
   const [isNull, setIsNull] = useState(false);
+  const [likeProduct, setLikeProduct] = useState([]);
   useEffect(() => {
     const getName = async (num) => {
       if (isLogin) {
@@ -166,6 +240,18 @@ const MyPage = () => {
     };
     getName(userNum);
   }, [isLogin]);
+  // 관심 상품 표시
+  useEffect(() => {
+  const likeProductSeen = async () => {
+    const rsp = await AxiosApi.likeProductGet(userNum);
+    if(rsp.status === 200) setLikeProduct(rsp.data);
+  };
+  likeProductSeen();
+}, []);
+const cardClick = (product_no) => {
+    navigate(`/Product/${product_no}`);
+  };
+
 
   return (
     <Container>
@@ -217,23 +303,21 @@ const MyPage = () => {
         </MyPageBody>
         <MyPageBody>
           <BodyTitle>관심 상품</BodyTitle>
-          <BodyBox>
-            <BodyCard>
-              <BodyImg src={TMP} alt="이미지" />
-            </BodyCard>
-            <BodyCard>
-              <BodyImg src={TMP} alt="이미지" />
-            </BodyCard>
-            <BodyCard>
-              <BodyImg src={TMP} alt="이미지" />
-            </BodyCard>
-            <BodyCard>
-              <BodyImg src={TMP} alt="이미지" />
-            </BodyCard>
+          <ProductBodyBox>
+          {(likeProduct).map((product)=> (
+        <Card className="card" key={product.product_no} onClick={() => cardClick(product.product_no)}>
+          <CardImg src={product.product_img} />
+                <CardTitle>
+                  <h4>{product.product_name}</h4>
+                </CardTitle>
+                <CardDesc>{product.content1}</CardDesc>
+                <CardTag>{product.content2}</CardTag>
+        </Card>
+           ))}
             <BodyMoreBtn>
               <img src={rightArrow} alt="ㅅ" />
             </BodyMoreBtn>
-          </BodyBox>
+          </ProductBodyBox>
         </MyPageBody>
       </MyPageContainer>
       <FooterDiv>
