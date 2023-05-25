@@ -38,6 +38,7 @@ import SBTI19 from "./Pages/SBTIpages/SBTI19";
 import SBTI20 from "./Pages/SBTIpages/SBTI20";
 import SBTIResult from "./Pages/SBTIResult";
 import DrinkofMonth from "./Pages/DrinkofMonth";
+import MyProduct from "./Pages/MyProduct";
 
 function App() {
   return (
@@ -81,6 +82,8 @@ function App() {
           <Route path="/SBTI20" element={<SBTI20 />} />
           <Route path="/SBTIResult" element={<SBTIResult />} />
           <Route path="/drinkofmonth" element={<DrinkofMonth />} />
+          <Route path="/MyProduct" element={<MyProduct />} />
+
         </Routes>
       </Router>
     </UserStore>

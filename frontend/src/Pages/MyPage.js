@@ -85,6 +85,7 @@ const BodyTitle = styled.div`
   height: 64px;
   padding: 16px;
   font-size: 1.5em;
+  display: flex;
 `;
 const BodyBox = styled.div`
   width: 100%;
@@ -122,11 +123,10 @@ const BodyMoreBtn = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
+  background: white;
+  border: none;
   width: 32px;
   height: 32px;
-  background: rgba(223, 214, 210);
-  border-radius: 10px;
-  border: 1px solid rgba(223, 214, 210);
   align-self: center;
   cursor: pointer;
   img {
@@ -154,6 +154,8 @@ const Card = styled.div`
   border: 0.5px solid rgb(193, 159, 138);
   /* border: none; */
   border-radius: 10px;
+  margin-left: 5px;
+  margin-right: 5px;
   cursor: pointer;
   &:hover {
     transform: translate(0, -5px);
@@ -176,16 +178,15 @@ const Card = styled.div`
 const ProductBodyBox = styled.div`
   width: 100%;
   height: 380px;
-  border: 1px solid rgba(223, 214, 210);
   border-radius: 10px;
   display: flex;
-  flex-flow: nowrap;
-  justify-content: space-evenly;
+  flex-flow: row nowrap;
+  justify-content: flex-start;
   align-self: center;
   align-items: center;
   @media screen and (max-width: 1024px) {
     width: 100vw;
-    justify-content: space-evenly;
+    justify-content: flex-start;
   }
 `;
 const CardImg = styled.img`
@@ -303,9 +304,13 @@ const cardClick = (product_no) => {
           </BodyBox>
         </MyPageBody>
         <MyPageBody>
-          <BodyTitle>관심 상품</BodyTitle>
+          <BodyTitle>관심 상품
+          <BodyMoreBtn>
+              <img onClick={()=> navigate("/MyProduct")} src={rightArrow} alt="ㅅ" />
+            </BodyMoreBtn>
+          </BodyTitle>
           <ProductBodyBox>
-          {(likeProduct).map((product)=> (
+          {(likeProduct.slice(0, 4)).map((product)=> (
         <Card className="card" key={product.product_no} onClick={() => cardClick(product.product_no)}>
           <CardImg src={product.product_img} />
                 <CardTitle>
@@ -315,9 +320,6 @@ const cardClick = (product_no) => {
                 <CardTag>{product.content2}</CardTag>
         </Card>
            ))}
-            <BodyMoreBtn>
-              <img src={rightArrow} alt="ㅅ" />
-            </BodyMoreBtn>
           </ProductBodyBox>
         </MyPageBody>
       </MyPageContainer>
