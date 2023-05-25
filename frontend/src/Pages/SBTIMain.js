@@ -47,6 +47,11 @@ const Container = styled.div`
   justify-content: space-between;
   align-items: center;
 
+  .loginfirst {
+    color: red;
+    font-weight: bold;
+  }
+
   .sbtiresult {
     font-weight: bold;
     font-style: italic;
@@ -145,7 +150,10 @@ const SBTIMain = () => {
         <div>
           <img className="imo" src={imageUrls[1]} alt="이모티콘" />
         </div>
-        <div>
+        {userNum === 0 ? (
+          <p className="loginfirst">로그인을 먼저 하고 결과를 확인하세요!!</p>
+        ) : (
+          <div>
           {userInfo.map((user) => (
             <div key={user.user_no}>
               <p>{user.user_name}님의 기존 SBTI 결과:</p>
@@ -156,7 +164,8 @@ const SBTIMain = () => {
               )}
             </div>
           ))}
-        </div>
+          </div>
+        )}
         <div>
           <button className="box" onClick={onClickSBTI}>
             <span>SBTI 시작하기</span>
