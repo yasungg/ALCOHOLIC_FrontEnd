@@ -11,6 +11,8 @@ import DescBoxIcon2 from "../Image/벚꽃.png";
 import { UpBtn } from "../component/ReusableComponents";
 import Modal from "../utils/Modal";
 import AxiosApi from "../api/AxiosApi";
+import SideBox from "../SideBox";
+
 
 const Container = styled.div`
   // 전체 영역을 설정 flexbox로 배치할 때 기준이 필요할 것이라 생각했기 때문
@@ -181,7 +183,7 @@ const Main = () => {
         </p>
         <p className="descBoxP2">이 술은 어때요?</p>
       </DescBox>
-      
+      <SideBox />
       <DivBox >
         {(mainProduct).map((product)=> (
         <Card className="card" key={product.product_no} onClick={() => cardClick(product.product_no)}>

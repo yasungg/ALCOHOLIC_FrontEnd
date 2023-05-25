@@ -37,6 +37,12 @@ const Container = styled.div`
     cursor: pointer;
   }
 
+  .loginfirst {
+    color: red;
+    font-weight: bold;
+    font-size: 1.2em;
+  }
+
   .usersbti {
     font-size: 1.5em;
   }
@@ -231,14 +237,18 @@ const SBTIResult = () => {
     <OutBox>
       <Container>
         <img className="close" src={X} alt="x" onClick={() => {navigate("/");}}/>
-        <div className="usersbti">
-          {userInfo && userInfo.map((user) => (
-            <div key={user.user_no}>
-              <p>{user.user_name}님의 SBTI 결과</p>
-              <p className="sbtiresult">"{user.user_sbti}"</p>
-            </div>
-          ))}
-        </div>
+        {userNum === 0 ? (
+          <p className="loginfirst">로그인을 하고 결과를 확인하세요!!</p>
+        ) : (
+          <div className="usersbti">
+            {userInfo && userInfo.map((user) => (
+              <div key={user.user_no}>
+                <p>{user.user_name}님의 SBTI 결과</p>
+                <p className="sbtiresult">"{user.user_sbti}"</p>
+              </div>
+            ))}
+          </div>
+        )}
         <div>
           <p>SBTI 유형에 맞는 추천 전통주</p>
         </div>

@@ -307,7 +307,7 @@ const HeaderDesign = () => {
           </NaviButtons>
         </Link>
         <NaviButtons>
-          <span onClick={() => navigate("/SBTIMain")}>이달의 술</span>
+          <span onClick={() => navigate("/drinkofmonth")}>이달의 술</span>
         </NaviButtons>
         <NaviButtons onClick={() => navigate("/RecmdPage")}>
           <span>술 추천</span>
