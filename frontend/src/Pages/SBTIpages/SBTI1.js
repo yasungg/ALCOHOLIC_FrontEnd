@@ -166,7 +166,7 @@ const SBTI1 = () => {
       if (item.answer1 === "증류주" || item.answer2 === "증류주")
         increaseInteger("spirits");
     });
-    navigate("/SBTI2");
+    navigate("/SBTI3");
   };
 
   // '아니다' 선택한 경우
@@ -181,7 +181,7 @@ const SBTI1 = () => {
       if (item.answer1 === "증류주" || item.answer2 === "증류주")
         decreaseInteger("spirits");
     });
-    navigate("/SBTI2");
+    navigate("/SBTI3");
   };
 
   useEffect(() => {
@@ -204,7 +204,7 @@ const SBTI1 = () => {
           }}
         />
         <div className="progress">
-          <p>1/20</p>
+          <p>1/10</p>
         </div>
         <div className="question">
           {questInfo &&
