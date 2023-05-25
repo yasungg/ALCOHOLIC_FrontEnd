@@ -108,12 +108,16 @@ const AxiosApi = {
       console.error("검색 결과 불러오기 실패!!", error);
     }
   },
+
+  // GET: sbiti 질문 번호에 맞는 질문 내용과 결과값 받아옴
   sbtiQuestion: async (number) => {
     return await axios.get(KH_DOMAIN + `/sbti?number=${number}`);
   },
+  // GET: 사용자 전체 정보 조회
   userNumber: async (no) => {
     return await axios.get(KH_DOMAIN + `/user?no=${no}`);
   },
+  // POST: sbti 결과를 MEMBER_INFO 테이블에 update
   sbtiUpdate: async (no, sbti) => {
     const member = {
       user_no: no,
@@ -121,9 +125,11 @@ const AxiosApi = {
     };
     return await axios.post(KH_DOMAIN + "/sbtiupdate", member);
   },
+  // GET: sbti 결과에 맞는 추천 상품 목록 받아옴
   sbtiRecommend: async (category) => {
     return await axios.get(KH_DOMAIN + `/sbtirecommend?cat=${category}`);
   },
+  
    //메인 상품
   mainProductGet : async(thema) => {
     return await axios.get(KH_DOMAIN + `/mainProduct?thema=${thema}`)
