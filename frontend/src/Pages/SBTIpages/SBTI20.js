@@ -204,7 +204,7 @@ const SBTI20 = () => {
           }}
         />
         <div className="progress">
-          <p>20/20</p>
+          <p>10/10</p>
         </div>
         <div className="question">
           {questInfo &&

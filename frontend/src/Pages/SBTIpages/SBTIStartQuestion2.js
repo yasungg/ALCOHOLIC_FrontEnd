@@ -183,8 +183,8 @@ const SBTIStartQuestion2 = () => {
         decreaseInteger("spirits");
     });
 
-    // 랜덤으로 SBTI 질문 번호 이동 - 아직은 질문 20개 전부다 진행하는 상태임
-    const paths = ["/SBTI1", "/SBTI1"];
+    // 랜덤으로 SBTI 질문 번호 이동 - 유형은 2개
+    const paths = ["/SBTI1", "/SBTI2"];
     const randomIndex = Math.floor(Math.random() * paths.length);
     const randomPath = paths[randomIndex];
     navigate(randomPath);
