@@ -182,6 +182,7 @@ const ProductBodyBox = styled.div`
   flex-flow: nowrap;
   justify-content: space-evenly;
   align-self: center;
+  align-items: center;
   @media screen and (max-width: 1024px) {
     width: 100vw;
     justify-content: space-evenly;

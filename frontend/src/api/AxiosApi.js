@@ -161,6 +161,14 @@ const AxiosApi = {
   // 관심 상품 하트 표시
   getCheckHeart : async(product_no, userNum) => {
     return await axios.get(KH_DOMAIN+ `/checkHeart?product_no=${product_no}&userNum=${userNum}`)
+  },
+  // 관심 상품 하트 삭제
+  postDeleteHeart : async(product_no, userNum) => {
+    const deleteHeart = {
+      productNo : product_no,
+      userNum : userNum
+    };
+    return await axios.post(KH_DOMAIN+ "/deleteHeart", deleteHeart);
   }
 };
 export default AxiosApi;

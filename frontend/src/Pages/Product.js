@@ -273,6 +273,15 @@ const Detail = () => {
     };
     checkHeart();
   },[])
+    const deleteHeart = async() => {
+      const response = await AxiosApi.postDeleteHeart(product_no, userNum);
+      if(response.data === true) {
+        setProductLiked(false);
+        console.log(response.data);
+      } else {
+        setProductLiked(true);
+      }
+    };
   return (
     <Container>
       <HeaderDesign />
@@ -292,9 +301,11 @@ const Detail = () => {
                 <li className="item1">용량 : {detail.capacity}</li>
               </Category>
               <Btn>
-                <button onClick={InsertLikeProduct} type="button" className={isProductLiked ? "liked" : "likebtn"}>
+                {isProductLiked?(<button onClick={deleteHeart} type="button" className={isProductLiked ? "liked" : "likebtn"}>
                   ♡
-                </button>
+                </button>):(<button onClick={InsertLikeProduct} type="button" className={isProductLiked ? "liked" : "likebtn"}>
+                  ♡
+                </button>)}
                 <button type="button" id="cartbtn">
                   구매처 바로가기
                 </button>
