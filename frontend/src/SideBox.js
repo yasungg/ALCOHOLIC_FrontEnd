@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 const SbtiBox = styled.button`
   position: fixed;
   top: 60%;
-  right: 10%;
+  right: 3%;
   transform: translateY(-40%);
   
   font-weight: bold;

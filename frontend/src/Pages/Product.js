@@ -153,7 +153,7 @@ const Btn = styled.div`
     width: 50px;
     height: 40px;
     border-radius: 3px;
-    color: #333;
+    color: white;
     border: 1px solid #ddd;
     margin-right: 20px;
     cursor: pointer;
