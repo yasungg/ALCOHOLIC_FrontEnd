@@ -18,6 +18,7 @@ const UserStore = ({ children }) => {
     setIsSidebar,
     contextLogin: () => setIsLogin(true),
     contextLogout: () => setIsLogin(false),
+    deleteUserNum: () => setUserNum(0)
     // ImageLoader: () => async (imageName) => {
     //   const storage = getStorage(firebase.app());
     //   const storageIconRef = ref(storage, "Icons");

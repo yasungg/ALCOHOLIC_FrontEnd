@@ -199,6 +199,7 @@ const HeaderDesign = () => {
     isSidebar,
     setIsSidebar,
     sideBarOpen,
+    deleteUserNum
   } = useContext(UserContext); // 로그인 관리를 위한 Context API
   const [userName, setUserName] = useState(""); // 로그인 후 유저정보(이름) 저장을 위한 useState
   const [sword, setSword] = useState(""); // 검색어 입력을 위한 useState
@@ -236,6 +237,7 @@ const HeaderDesign = () => {
     getName(userNum);
   }, [isLogin]);
   const onClickLogout = () => {
+    deleteUserNum();
     contextLogout();
     navigate("/");
   };
