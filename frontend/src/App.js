@@ -39,6 +39,9 @@ import SBTI20 from "./Pages/SBTIpages/SBTI20";
 import SBTIResult from "./Pages/SBTIResult";
 import DrinkofMonth from "./Pages/DrinkofMonth";
 import MyProduct from "./Pages/MyProduct";
+import InsertReview from "./Pages/InsertReview";
+import UpdateReview from "./Pages/UpdateReview";
+import Review from "./Pages/Review";
 
 function App() {
   return (
@@ -83,6 +86,9 @@ function App() {
           <Route path="/SBTIResult" element={<SBTIResult />} />
           <Route path="/drinkofmonth" element={<DrinkofMonth />} />
           <Route path="/MyProduct" element={<MyProduct />} />
+          <Route path="/InsertReview/:product_no" element={<InsertReview/>} />
+          <Route path="/UpdateReview/:rev_no" element={<UpdateReview />} />
+          <Route path="/Review" element={<Review />} />
 
         </Routes>
       </Router>

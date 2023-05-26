@@ -1,11 +1,14 @@
 import React, { useEffect, useState, useRef, useContext } from "react";
 import styled from "styled-components";
+import { useParams, useNavigate } from "react-router-dom";
 import product1 from "../Image/product1.jpg";
 import point1 from "../Image/point1.jpeg";
 import AxiosApi from "../api/AxiosApi";
-import { useParams } from "react-router-dom";
+import ModeEditOutlineIcon from '@mui/icons-material/ModeEditOutline';
 import HeaderDesign from "../HeaderDesign";
+import FavoriteIcon from '@mui/icons-material/Favorite';
 import { UserContext } from "../api/Context";
+import Review from "./Review";
 
 const Container = styled.div`
   width: 100%;
@@ -36,11 +39,12 @@ const Content = styled.div`
 
 const Productimg = styled.div`
   width: 300px;
+  margin-right: 20px;
 `;
 
 const Products = styled.img`
   width: 100%;
-  height: 380px;
+  height: 100%;
 `;
 
 const ProductDetail = styled.div`
@@ -90,49 +94,25 @@ const Point = styled.img`
   width: 700px;
 `;
 
-const Review = styled.div`
-  width: 800px;
-  height: auto;
-  margin: 0 auto;
-
-  h1 {
-    padding-left: 20px;
-    padding-bottom: 5px;
-  }
-`;
-
-const Reviewbox = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
-const Item1 = styled.div`
-  width: 700px;
-  height: 30px;
-  margin: 0 auto;
-  padding: 0 30px;
-  display: flex;
-  justify-content: space-between;
-  border-radius: 8px;
-  background-color: #edeae3;
-`;
-
-const Rid = styled.div`
-  align-self: center;
-`;
-
-const Rdate = styled.div`
-  align-self: center;
-`;
-
-const Item2 = styled.div`
-  padding-top: 30px;
-  padding-left: 30px;
-`;
 
 const Btn = styled.div`
   display: flex;
   justify-content: flex-end;
+
+  #revbtn {
+        padding: 0 10px;
+        text-align: center;
+        width: 100px;
+        height: 40px;
+        margin-right: 10px;
+        font-weight: bold;
+        border-radius: 5px;
+        color: #333;
+        border: 1px solid #ddd;
+        cursor: pointer;
+        background-color: rgb(193, 159, 138);
+        color: white;
+}
 
   .likebtn {
     padding: 0 10px;
@@ -160,14 +140,17 @@ const Btn = styled.div`
   }
   #cartbtn {
     padding: 0 10px;
-    text-align: center;
-    width: 200px;
-    height: 40px;
-    border-radius: 3px;
-    color: #333;
-    background-color: #fff;
-    border: 1px solid #ddd;
-    cursor: pointer;
+        text-align: center;
+        width: 100px;
+        height: 40px;
+        font-weight: bold;
+        border-radius: 5px;
+        color: #333;
+        border: 1px solid #ddd;
+        cursor: pointer;
+        background-color: rgb(193, 159, 138);
+        color: white;
+        margin-right: 10px;
   }
 `;
 const TabMenuContainer = styled.div`
@@ -190,7 +173,6 @@ const TabMenu = styled.ul`
     display: flex;
     width: 70px;
     height: 30px;
-    /* width: calc(100% /3); */
     padding: 0 10px;
     font-size: 10px;
     transition: 0.5s;
@@ -212,11 +194,12 @@ const TabMenu = styled.ul`
 
 const Detail = () => {
   const { product_no } = useParams();
-  const { userNum } = useContext(UserContext); // 로그인 관리를 위한 Context API
+  const { isLogin, userNum } = useContext(UserContext); // 로그인 관리를 위한 Context API
   const [isProductLiked, setProductLiked] = useState(false);
   const [productDetail, setProductDetail] = useState([]);
   const [currentTab, setCurrentTab] = useState(0);
   const tabMenuRef = useRef();
+  const navigate = useNavigate();
 
   // 술 상세정보 조회
   useEffect(() => {
@@ -232,6 +215,12 @@ const Detail = () => {
     };
     productDetail();
   }, [product_no]);
+
+
+  // 구매처 링크 이동
+const handleCartButtonClick = (link) => {
+  window.open(link, '_blank');
+};
 
   const menuArr = [
     { name: "상세정보", content: "Tab menu ONE" },
@@ -301,15 +290,18 @@ const Detail = () => {
                 <li className="item1">용량 : {detail.capacity}</li>
               </Category>
               <Btn>
-                {isProductLiked?(<button onClick={deleteHeart} type="button" className={isProductLiked ? "liked" : "likebtn"}>
-                  ♡
+            {isLogin ? (<button type="button" id="revbtn"
+            onClick={()=>navigate(`/InsertReview/${product_no}`)}><ModeEditOutlineIcon fontSize="small"/>한줄평</button>)
+            : (<button type="button" id="revbtn"
+            onClick={()=>navigate("/Login")}><ModeEditOutlineIcon fontSize="small"/>한줄평</button>)}
+             <button type="button" id="cartbtn"
+             onClick={()=>handleCartButtonClick(detail.store_link)}>구매처 링크</button>
+              {isProductLiked?(<button onClick={deleteHeart} type="button" className={isProductLiked ? "liked" : "likebtn"}>
+                <FavoriteIcon />
                 </button>):(<button onClick={InsertLikeProduct} type="button" className={isProductLiked ? "liked" : "likebtn"}>
-                  ♡
+                <FavoriteIcon />
                 </button>)}
-                <button type="button" id="cartbtn">
-                  구매처 바로가기
-                </button>
-              </Btn>
+            </Btn>
             </ProductDetail>
           </Content>
         ))}
@@ -335,16 +327,7 @@ const Detail = () => {
           ))}
 
         {currentTab === 1 && (
-          <Review>
-            <h1>리뷰</h1>
-            <Reviewbox>
-              <Item1>
-                <Rid>아이디</Rid>
-                <Rdate>날짜</Rdate>
-              </Item1>
-              <Item2></Item2>
-            </Reviewbox>
-          </Review>
+          <Review></Review>
         )}
       </BodyContainer>
     </Container>

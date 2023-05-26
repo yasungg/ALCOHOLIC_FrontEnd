@@ -169,6 +169,63 @@ const AxiosApi = {
       userNum : userNum
     };
     return await axios.post(KH_DOMAIN+ "/deleteHeart", deleteHeart);
+  },
+  // 해당 술 리뷰 가져오기
+  productReview : async(product)=>{
+    try{
+      const productReviewResponse = await axios.get(
+        KH_DOMAIN + `/product/review?product=${product}`
+      );
+      console.log(productReviewResponse);
+      console.log(productReviewResponse.data);
+      return productReviewResponse.data;
+    } catch(error) {
+      console.error("연결 실패!!", error);
+    }
+    },
+
+ // 리뷰 작성
+ insertReview : async(user_no, rev_content, product_no) => {
+  try {
+    const rsp = await axios.post(KH_DOMAIN + "/product/insertReview", {
+      user_no : user_no,
+      rev_content : rev_content,
+      product : product_no
+    });
+    console.log(rsp.data);
+    return rsp.data
+  } catch(error) {
+    console.error("실패");
+    return false;
   }
+ },
+ // 리뷰 수정
+ updateReview: async (rev_no, rev_content) => {
+  try {
+    const rsp = await axios.post(KH_DOMAIN + "/updateReview", {
+      rev_no,
+      rev_content,
+    });
+    return rsp.data;
+  } catch (error) {
+    console.error("리뷰 수정에 실패했습니다.", error);
+    console.log(rev_no, rev_content);
+    return false;
+  }
+},
+
+// 리뷰 삭제
+deleteReview: async (rev_no) => {
+  try {
+    const rsp = await axios.get(
+      KH_DOMAIN + `/deleteReview?rev_no=${rev_no}`
+    );
+    return rsp.data;
+  } catch (error) {
+    console.error("리뷰 삭제에 실패했습니다.", error);
+    console.log(rev_no);
+    return false;
+  }
+}
 };
 export default AxiosApi;
