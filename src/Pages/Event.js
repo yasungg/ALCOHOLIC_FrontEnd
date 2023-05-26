@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import styled from "styled-components";
 import AxiosApi from "../api/AxiosApi";
 import HeaderDesign from "../HeaderDesign";
 import FooterDesign from "../FooterDesign";
 import { UpBtn, Sidebar } from "../component/ReusableComponents";
 import ImageUploader from "../component/UploadImage";
+import { UserContext } from "../api/Context";
 
 const Container = styled.div`
   display: flex;
@@ -118,6 +119,7 @@ const Event = () => {
   const [endEvent, setEndEvent] = useState([]);
   const [isIngEventButtonClicked, setIsIngEventButtonClicked] = useState(true);
   const [isEndEventButtonClicked, setIsEndEventButtonClicked] = useState(false);
+  const { isSidebar, setIsSidebar } = useContext(UserContext);
 
   // 진행중인 이벤트 조회
   const ingEventInfo = async () => {
@@ -127,6 +129,7 @@ const Event = () => {
   };
 
   useEffect(() => {
+    setIsSidebar(false);
     ingEventInfo();
   }, []);
 
@@ -194,6 +197,7 @@ const Event = () => {
         <UpBtn />
       </BottomBox>
       <FooterDesign />
+      <Sidebar />
     </Container>
   );
 };

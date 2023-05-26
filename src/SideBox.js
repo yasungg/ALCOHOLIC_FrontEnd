@@ -3,24 +3,27 @@ import { useNavigate } from "react-router-dom";
 
 const SbtiBox = styled.button`
   position: fixed;
-  top: 60%;
-  right: 3%;
+  top: 80%;
+  left: 3%;
   transform: translateY(-40%);
-  
+
   font-weight: bold;
   width: 120px;
   height: 300p;
-  background-color: beige;
-  color: brown;
-  border: 3px solid brown;
+  background: rgb(223, 214, 210);
+  color: #404949;
+  border: none;
+  border-radius: 3px;
   cursor: pointer;
-
+  @media screen and (max-width: 1024px) {
+    display: none;
+  }
 `;
 
 const SideBox = () => {
   const navigate = useNavigate();
 
-  return(
+  return (
     <SbtiBox onClick={() => navigate("/SBTIMain")}>
       <p>지금 당장</p>
       <p>SBTI</p>

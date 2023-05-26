@@ -2,7 +2,7 @@ import HeaderDesign from "../HeaderDesign";
 import styled from "styled-components";
 import TMP from "../Image/벚꽃.png";
 import rightArrow from "../Image/angle-right.png";
-import { UpBtn } from "../component/ReusableComponents";
+import { UpBtn, Sidebar } from "../component/ReusableComponents";
 import { useNavigate } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import AxiosApi from "../api/AxiosApi";
@@ -160,7 +160,7 @@ const Card = styled.div`
   &:hover {
     transform: translate(0, -5px);
   }
-  
+
   &:hover {
     transform: translate(0, -5px);
   }
@@ -220,11 +220,12 @@ const CardTag = styled.div`
 
 const MyPage = () => {
   const navigate = useNavigate();
-  const { userNum, isLogin } = useContext(UserContext);
+  const { userNum, isLogin, setIsSidebar } = useContext(UserContext);
   const [userInfo, setUserInfo] = useState([]);
   const [isNull, setIsNull] = useState(false);
   const [likeProduct, setLikeProduct] = useState([]);
   useEffect(() => {
+    setIsSidebar(false);
     const getName = async (num) => {
       if (isLogin) {
         try {
@@ -244,27 +245,26 @@ const MyPage = () => {
   }, [isLogin]);
   // 관심 상품 표시
   useEffect(() => {
-  const likeProductSeen = async () => {
-    const rsp = await AxiosApi.likeProductGet(userNum);
-    if(rsp.status === 200) setLikeProduct(rsp.data);
-  };
-  likeProductSeen();
-}, []);
-const cardClick = (product_no) => {
+    const likeProductSeen = async () => {
+      const rsp = await AxiosApi.likeProductGet(userNum);
+      if (rsp.status === 200) setLikeProduct(rsp.data);
+    };
+    likeProductSeen();
+  }, []);
+  const cardClick = (product_no) => {
     navigate(`/Product/${product_no}`);
   };
-
 
   return (
     <Container>
       <HeaderDesign />
       <MyPageContainer>
-      {userInfo.map((e) => (
-        <UserCard key={e.user_no}>
-          <ProfilePicture 
-            src={e.user_profile}
-            onClick={() => navigate("/SBTIMain")}
-          />
+        {userInfo.map((e) => (
+          <UserCard key={e.user_no}>
+            <ProfilePicture
+              src={e.user_profile}
+              onClick={() => navigate("/SBTIMain")}
+            />
             <UserDesc>
               <p>{e.user_name}님 환영합니다.</p>
               <p>연락처 : {e.user_phone}</p>
@@ -278,8 +278,8 @@ const cardClick = (product_no) => {
                 )}
               </p>
             </UserDesc>
-        </UserCard>
-                  ))}
+          </UserCard>
+        ))}
         <ModifyBtn onClick={() => navigate("/MemberUpdate")}>
           <span>회원정보 수정</span>
         </ModifyBtn>
@@ -304,28 +304,38 @@ const cardClick = (product_no) => {
           </BodyBox>
         </MyPageBody>
         <MyPageBody>
-          <BodyTitle>관심 상품
-          <BodyMoreBtn>
-              <img onClick={()=> navigate("/MyProduct")} src={rightArrow} alt="ㅅ" />
+          <BodyTitle>
+            관심 상품
+            <BodyMoreBtn>
+              <img
+                onClick={() => navigate("/MyProduct")}
+                src={rightArrow}
+                alt="ㅅ"
+              />
             </BodyMoreBtn>
           </BodyTitle>
           <ProductBodyBox>
-          {(likeProduct.slice(0, 4)).map((product)=> (
-        <Card className="card" key={product.product_no} onClick={() => cardClick(product.product_no)}>
-          <CardImg src={product.product_img} />
+            {likeProduct.slice(0, 4).map((product) => (
+              <Card
+                className="card"
+                key={product.product_no}
+                onClick={() => cardClick(product.product_no)}
+              >
+                <CardImg src={product.product_img} />
                 <CardTitle>
                   <h4>{product.product_name}</h4>
                 </CardTitle>
                 <CardDesc>{product.content1}</CardDesc>
                 <CardTag>{product.content2}</CardTag>
-        </Card>
-           ))}
+              </Card>
+            ))}
           </ProductBodyBox>
         </MyPageBody>
       </MyPageContainer>
       <FooterDiv>
         <UpBtn />
       </FooterDiv>
+      <Sidebar />
     </Container>
   );
 };

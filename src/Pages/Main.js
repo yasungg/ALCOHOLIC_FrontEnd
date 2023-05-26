@@ -6,13 +6,11 @@ import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { storage } from "../api/firebase";
 import { ref, getDownloadURL } from "firebase/storage";
-import DescBoxIcon1 from "../Image/부모님.png";
-import DescBoxIcon2 from "../Image/벚꽃.png";
-import { UpBtn } from "../component/ReusableComponents";
+import { UpBtn, Sidebar } from "../component/ReusableComponents";
 import Modal from "../utils/Modal";
 import AxiosApi from "../api/AxiosApi";
 import SideBox from "../SideBox";
-
+import { UserContext } from "../api/Context";
 
 const Container = styled.div`
   // 전체 영역을 설정 flexbox로 배치할 때 기준이 필요할 것이라 생각했기 때문
@@ -80,7 +78,7 @@ const Card = styled.div`
   &:hover {
     transform: translate(0, -5px);
   }
-  
+
   &:hover {
     transform: translate(0, -5px);
   }
@@ -133,6 +131,7 @@ const Main = () => {
   const [iconUrls, setIconUrls] = useState([]);
   const [mainProduct, setmainProduct] = useState([]);
   const [mainProduct2, setmainProduct2] = useState([]);
+  const { isSidebar, setIsSidebar, isLogin } = useContext(UserContext);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -151,12 +150,13 @@ const Main = () => {
       });
   }, []);
   useEffect(() => {
+    setIsSidebar(false);
     const mainProductSeen = async () => {
       const rsp = await AxiosApi.mainProductGet("어버이날");
       if (rsp.status === 200) setmainProduct(rsp.data);
       console.log(rsp.data);
     };
-  
+
     mainProductSeen();
   }, []);
   useEffect(() => {
@@ -165,7 +165,7 @@ const Main = () => {
       if (rsp.status === 200) setmainProduct2(rsp.data);
       console.log(rsp.data);
     };
-  
+
     mainProductSeen2();
   }, []);
   const cardClick = (product_no) => {
@@ -184,19 +184,22 @@ const Main = () => {
         <p className="descBoxP2">이 술은 어때요?</p>
       </DescBox>
       <SideBox />
-      <DivBox >
-        {(mainProduct).map((product)=> (
-        <Card className="card" key={product.product_no} onClick={() => cardClick(product.product_no)}>
-          <CardImg src={product.product_img} />
-                <CardTitle>
-                  <h4>{product.product_name}</h4>
-                </CardTitle>
-                <CardDesc>{product.content1}</CardDesc>
-                <CardTag>{product.content2}</CardTag>
-        </Card>
-           ))}
+      <DivBox>
+        {mainProduct.map((product) => (
+          <Card
+            className="card"
+            key={product.product_no}
+            onClick={() => cardClick(product.product_no)}
+          >
+            <CardImg src={product.product_img} />
+            <CardTitle>
+              <h4>{product.product_name}</h4>
+            </CardTitle>
+            <CardDesc>{product.content1}</CardDesc>
+            <CardTag>{product.content2}</CardTag>
+          </Card>
+        ))}
       </DivBox>
-   
 
       <DescBox>
         <p className="descBoxP1">
@@ -206,21 +209,26 @@ const Main = () => {
         <p className="descBoxP2">꽃놀이를 우리 술과 함께 즐겨요!</p>
       </DescBox>
       <DivBox className="divBox2">
-      {(mainProduct2).map((product)=> (
-        <Card className="card" key={product.product_no} onClick={() => cardClick(product.product_no)}>
-          <CardImg src={product.product_img} />
-                <CardTitle>
-                  <h4>{product.product_name}</h4>
-                </CardTitle>
-                <CardDesc>{product.content1}</CardDesc>
-                <CardTag>{product.content2}</CardTag>
-        </Card>
-           ))}
+        {mainProduct2.map((product) => (
+          <Card
+            className="card"
+            key={product.product_no}
+            onClick={() => cardClick(product.product_no)}
+          >
+            <CardImg src={product.product_img} />
+            <CardTitle>
+              <h4>{product.product_name}</h4>
+            </CardTitle>
+            <CardDesc>{product.content1}</CardDesc>
+            <CardTag>{product.content2}</CardTag>
+          </Card>
+        ))}
       </DivBox>
       <DownBlanc>
         <UpBtn />
       </DownBlanc>
       <FooterDesign />
+      <Sidebar />
     </Container>
   );
 };
