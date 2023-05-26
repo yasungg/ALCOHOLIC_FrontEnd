@@ -1,7 +1,5 @@
 import styled from "styled-components";
 import { useState, useEffect, useContext } from "react";
-import { storage } from "../api/firebase";
-import { ref, getDownloadURL } from "firebase/storage";
 import { useNavigate } from "react-router-dom";
 import HeaderDesign from "../HeaderDesign";
 import FooterDesign from "../FooterDesign";
@@ -12,6 +10,7 @@ import EscalatorWarningIcon from "@mui/icons-material/EscalatorWarning";
 import CelebrationIcon from "@mui/icons-material/Celebration";
 import BrunchDiningIcon from "@mui/icons-material/BrunchDining";
 import FestivalIcon from "@mui/icons-material/Festival";
+import { UserContext } from "../api/Context";
 
 const initialMinheight = "200px";
 const changedMinheight = "295px";
@@ -224,14 +223,9 @@ const RecmdPage = () => {
   const [forthData, setForthData] = useState([]); // 홈파티 테마 검색 결과 저장
   const [fifthData, setFifthData] = useState([]); // 감성캠핑 테마 검색 결과 저장
   const [divMinHeight, setDivMinHeight] = useState(initialMinheight);
+  const { setIsSidebar } = useContext(UserContext);
   // ㄴ 종류별/테마 버튼 토글로 Category Container styled component min-height 값 변경을 위한 useState
 
-  // useEffect(() => { // 아이콘 로딩을 위한 파이어베이스
-  //   const storage = getStorage(firebase.app());
-  //   const storageIconRef = ref(storage, "Icons");
-
-  //   Promise.all([getDownloadURL(storageIconRef, "벚꽃.png")]);
-  // });
   const navigate = useNavigate(); // 카드 클릭 시 술 상세정보 페이지로 넘어가도록 하기 위한 useNavigate
 
   const FirstBtnCLicked = () => {
@@ -379,7 +373,9 @@ const RecmdPage = () => {
   const cardClick = (product_no) => {
     navigate(`/Product/${product_no}`);
   };
-
+  useEffect(() => {
+    setIsSidebar(false);
+  }, []);
   return (
     <Container>
       <HeaderDesign />
@@ -631,7 +627,7 @@ const RecmdPage = () => {
         </BottomBox>
       </BodyContainer>
       <FooterDesign />
-      <Sidebar height="100%" />
+      <Sidebar />
     </Container>
   );
 };

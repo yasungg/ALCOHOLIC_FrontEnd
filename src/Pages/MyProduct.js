@@ -6,7 +6,7 @@ import HeaderDesign from "../HeaderDesign";
 import FooterDesign from "../FooterDesign";
 import { useContext } from "react";
 import { UserContext } from "../api/Context";
-
+import { UpBtn, Sidebar } from "../component/ReusableComponents";
 const Container = styled.div`
   // 전체 영역을 설정 flexbox로 배치할 때 기준이 필요할 것이라 생각했기 때문
   box-sizing: border-box;
@@ -114,14 +114,13 @@ const MyProduct = () => {
   useEffect(() => {
     const likeProductSeen = async () => {
       const rsp = await AxiosApi.likeProductGet(userNum);
-      if(rsp.status === 200) {
+      if (rsp.status === 200) {
         setLikeProduct(rsp.data);
         setIsLikeProductResult(true);
       }
     };
     likeProductSeen();
   }, []);
-
 
   const cardClick = (product_no) => {
     navigate(`/Product/${product_no}`);
@@ -161,10 +160,10 @@ const MyProduct = () => {
             </FalseResult>
           </>
         )}
-        <DownBlanc>
-        </DownBlanc>
+        <DownBlanc></DownBlanc>
       </BodyContainer>
       <FooterDesign />
+      <Sidebar />
     </Container>
   );
 };
