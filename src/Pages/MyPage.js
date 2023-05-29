@@ -3,7 +3,7 @@ import styled from "styled-components";
 import TMP from "../Image/벚꽃.png";
 import rightArrow from "../Image/angle-right.png";
 import { UpBtn, Sidebar } from "../component/ReusableComponents";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,Link } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import AxiosApi from "../api/AxiosApi";
 import { UserContext } from "../api/Context";
@@ -87,37 +87,7 @@ const BodyTitle = styled.div`
   font-size: 1.5em;
   display: flex;
 `;
-const BodyBox = styled.div`
-  width: 100%;
-  height: 286px;
-  border: 1px solid rgba(223, 214, 210);
-  border-radius: 10px;
-  display: flex;
-  justify-content: space-evenly;
-`;
-const BodyCard = styled.div`
-  width: 180px;
-  height: 254px;
-  background: white;
-  border-radius: 10px;
-  align-self: center;
-  cursor: pointer;
-  &:hover {
-    transform: translate(0, -5px);
-    transition: all 0.5s;
-  }
-  @media screen and (max-width: 1024px) {
-    &:nth-child(4) {
-      display: none;
-    }
-  }
-`;
-const BodyImg = styled.img`
-  width: 180px;
-  height: 180px;
-  background: rgb(193, 159, 138);
-  border-radius: 10px;
-`;
+
 const BodyMoreBtn = styled.button`
   box-sizing: border-box;
   display: flex;
@@ -217,15 +187,72 @@ const CardTag = styled.div`
   font-size: 0.9em;
   align-self: center;
 `;
+const ReviewBodyBox = styled.div`
+  width: 100%;
+  border: none;
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-evenly;
+`;
+const ReviewBodyCard = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 500px;
+  min-width: 500px;
+  height: 254px;
+  background: rgba(223, 214, 210, .9);
+  border-radius: 10px;
+  align-self: center;
+  cursor: pointer;
+  &:nth-child(1) {
+    margin-right: 16px;
+  }
+  .reviewP {
+    text-decoration: none;
+    &:active {
+      text-decoration: none;
+    }
+    &:visited {
+      text-decoration: none;
+    }
+  }
+  &:hover {
+    transform: translate(0, -5px);
+    transition: all 0.5s;
+  }
+  &:active {
+    text-decoration: none;
+  }
+  @media screen and (max-width: 1024px) {
+    &:nth-child(4) {
+      display: none;
+    }
+  }
+`;
+const ReviewImg = styled.img`
+  width: 180px;
+  height: 180px;
+  border-radius: 10px;
+  margin: 0 32px 0 32px;
+`;
+const ReviewCardPBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  height: 180px;
+`;
 
 const MyPage = () => {
   const navigate = useNavigate();
   const { userNum, isLogin, setIsSidebar } = useContext(UserContext);
+  const [review, setReview] = useState([]);
   const [userInfo, setUserInfo] = useState([]);
   const [isNull, setIsNull] = useState(false);
   const [likeProduct, setLikeProduct] = useState([]);
   useEffect(() => {
     setIsSidebar(false);
+    console.log(isNull);
     const getName = async (num) => {
       if (isLogin) {
         try {
@@ -236,13 +263,25 @@ const MyPage = () => {
           console.error("유저 정보 불러오기 실패!!", error);
           console.log(userNum);
         }
-        if (userInfo.user_sbti == null) setIsNull(true);
+        if (userInfo.user_sbti == null) {
+          setIsNull(true);
+        } else {
+          setIsNull(false);
+        }
       } else if (!isLogin) {
         setUserInfo([]);
       }
     };
     getName(userNum);
   }, [isLogin]);
+    useEffect(() => {
+    const reviewGet = async() => {
+      const rv = await AxiosApi.myReview(userNum);
+      console.log(rv.data);
+      setReview(rv.data);
+    }
+    reviewGet();
+  }, []);
   // 관심 상품 표시
   useEffect(() => {
     const likeProductSeen = async () => {
@@ -272,9 +311,9 @@ const MyPage = () => {
               <p>
                 술 취향 :&nbsp;
                 {isNull ? (
-                  <span>아직 술bti 검사가 이루어지지 않은 회원입니다.</span>
+                  <span>{e.user_sbti}</span>
                 ) : (
-                  e.user_sbti
+                  <span>아직 술bti 검사가 이루어지지 않은 회원입니다.</span>
                 )}
               </p>
             </UserDesc>
@@ -284,24 +323,25 @@ const MyPage = () => {
           <span>회원정보 수정</span>
         </ModifyBtn>
         <MyPageBody>
-          <BodyTitle>리뷰 관리</BodyTitle>
-          <BodyBox>
-            <BodyCard>
-              <BodyImg src={TMP} alt="이미지" />
-            </BodyCard>
-            <BodyCard>
-              <BodyImg src={TMP} alt="이미지" />
-            </BodyCard>
-            <BodyCard>
-              <BodyImg src={TMP} alt="이미지" />
-            </BodyCard>
-            <BodyCard>
-              <BodyImg src={TMP} alt="이미지" />
-            </BodyCard>
+        <BodyTitle>
+            리뷰 관리
             <BodyMoreBtn>
               <img src={rightArrow} alt="ㅅ" />
-            </BodyMoreBtn>
-          </BodyBox>
+            </BodyMoreBtn>  
+          </BodyTitle>
+          <ReviewBodyBox >
+          {review.slice(0, 2).map((e)=> (
+            <Link to={`/product/${e.product_no}`} style={{ textDecoration: 'none', color: '#404949'}}><ReviewBodyCard key={e.rev_no} >
+              <ReviewImg src={e.rev_img}/>
+              <ReviewCardPBox>
+              <p className="reviewP">아이디 : {e.user_id}</p>
+              <p className="reviewP">작성일 : {e.rev_date}</p>
+              <p className="reviewP">한줄평 : {e.rev_content}</p>
+              </ReviewCardPBox>
+            </ReviewBodyCard>
+            </Link>
+          ))}
+          </ReviewBodyBox>
         </MyPageBody>
         <MyPageBody>
           <BodyTitle>

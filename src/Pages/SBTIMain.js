@@ -116,7 +116,7 @@ const SBTIMain = () => {
       if (rsp.status === 200) setUserInfo(rsp.data);
     };
     userInfo();
-  }, [userNum]);
+  }, []);
   useEffect(() => {
     const storageIconRef = ref(storage, "Icons");
 

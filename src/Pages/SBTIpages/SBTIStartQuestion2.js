@@ -1,6 +1,6 @@
 import React from "react";
 import AxiosApi from "../../api/AxiosApi";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import styled from "styled-components";
 import { useState, useEffect } from "react";
 import X from "../../Image/x.png";
@@ -166,8 +166,7 @@ const SBTIStartQuestion2 = () => {
       if (item.answer1 === "증류주" || item.answer2 === "증류주")
         increaseInteger("spirits");
     });
-    window.location.href =
-      "http://bgnmh.go.kr/checkmehealme/main/alcoholMain.xx";
+      window.open("http://bgnmh.go.kr/checkmehealme/main/alcoholMain.xx");
   };
 
   // '아니다' 선택한 경우

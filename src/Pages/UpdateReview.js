@@ -109,14 +109,11 @@ const UpdateReview = (e) => {
   const [rev_content, setRevContent] = useState("");
   const { userNum, productNo } = useContext(UserContext);
   const navigate = useNavigate();
-
-  const ProductNo = e;
-  
   useEffect(()=>{
       const productDetail = async() => {
       try {
-          const rsp = await AxiosApi.ProductInfo(product_no);
-          if(rsp.status === 200) setProductDetail(rsp.data);
+          const rsp = await AxiosApi.ProductInfo(productNo);
+          if(rsp) setProductDetail(rsp);
           console.log(rsp);
           console.log(product_no);
           } catch(error) {
@@ -135,7 +132,7 @@ const UpdateReview = (e) => {
           const success = await AxiosApi.updateReview(rev_no, rev_content);
           if (success) {
             console.log("리뷰 작성 성공");
-            navigate(`/product/${ProductNo}`);
+            navigate(`/product/${productNo}`);
 
             // 리뷰 작성 성공 시 추가적으로 수행할 작업을 여기에 추가하면 됩니다.
           } else {
@@ -172,9 +169,9 @@ const UpdateReview = (e) => {
   </Contents>
   ))}  
               <Content>
-              <ImageUploader />
               <input id="content" type="text" value={rev_content} 
               placeholder="한줄평을 작성해 주세요." onChange={(e) => setRevContent(e.target.value)} />
+               <ImageUploader />
               </Content>
               <Button type="submit" onClick={handleReviewSubmit}>등록</Button>
           </BodyContainer>

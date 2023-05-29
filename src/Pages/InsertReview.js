@@ -4,6 +4,8 @@ import { useState, useEffect, useContext } from "react";
 import AxiosApi from "../api/AxiosApi";
 import { UserContext } from "../api/Context";
 import HeaderDesign from "../HeaderDesign";
+import ImageUploader from "../component/UploadImage";
+import ReviewImageUploader from "../component/ReviewUploadImage";
 
  const Container = styled.div`
  display: flex;
@@ -103,9 +105,9 @@ const Button = styled.button`
 
 const InsertReview = () => {
     const { product_no } = useParams();
-    const [productDetail, setProductDetail] = useState([]);
-    const [rev_content, setRevContent] = useState("");
-    const { userNum } = useContext(UserContext);
+    const [ productDetail, setProductDetail ] = useState([]);
+    const [ rev_content, setRevContent ] = useState("");
+    const { userNum, rev_img } = useContext(UserContext);
     const navigate = useNavigate();
 
     useEffect(()=>{
@@ -123,9 +125,10 @@ const InsertReview = () => {
     }, [product_no]);
 
       const handleReviewSubmit = async (e) => {
-        
+        console.log(rev_img);
         try {
-            const success = await AxiosApi.insertReview(userNum, rev_content, product_no);
+            const success = await AxiosApi.insertReview(userNum, rev_content, rev_img, product_no);
+
             if (success) {
               console.log("리뷰 작성 성공");
               navigate(`/product/${product_no}`);
@@ -169,6 +172,7 @@ const InsertReview = () => {
                 <Content>
                 <input id="content" type="text" value={rev_content} 
                 placeholder="한줄평을 작성해 주세요." onChange={(e) => setRevContent(e.target.value)} />
+                 <ReviewImageUploader />
                 </Content>
                 <Button type="submit" onClick={handleReviewSubmit}>등록</Button>
             </BodyContainer>

@@ -48,7 +48,7 @@ const Item2 = styled.div`
     height: auto;
     padding: 20px 30px;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     
     `;
 
@@ -91,28 +91,33 @@ const Btn = styled.div`
         color: white;
     
 }
-
+`;
+const ReviewImg = styled.img`
+    width: 150px;
+    height: 150px;
+    margin-right: 32px;
 `;
 
 const Review = () => {
     const { product_no } = useParams();
-    const { userNum } = useContext(UserContext);
+    const { userNum, setProductNo  } = useContext(UserContext);
     const [review, setReview] = useState([]); // 리뷰 데이터 불러오기
     const [load, setLoad] = useState(false);
     const navigate = useNavigate();
 
     useEffect(()=>{
-        const reviewSeen = async() => {
+        const review = async() => {
         try {
             const rsp = await AxiosApi.productReview(product_no);
-            if(rsp) setReview(rsp);
+            if(rsp) setReview(rsp); 
             console.log(rsp);
             console.log(product_no);
+            setProductNo(product_no);
         } catch(error) {
             console.log("실패!!", error);
         }
     };
-        reviewSeen();
+        review();
         return (
             setLoad(false)
         )
@@ -136,24 +141,24 @@ const Review = () => {
             // 오류 발생 시 추가적으로 수행할 작업을 여기에 추가하면 됩니다.
           }
       };
-    
+
     return(
         <Reviewbox>
-            {review && review.map((rv)=>(
+            {review.map((rv)=>(
               <Reviews key={rv.product_no}>
                 <Item1>
                   <Rid>{rv.user_id}</Rid>
                   <Rdate>{rv.rev_date}</Rdate>
                 </Item1>
                 <Item2>
+                    <ReviewImg src={rv.rev_img}/>
                   <Rcontent>{rv.rev_content}</Rcontent>
                 </Item2>
             <Btn>
-            
             {userNum === rv.user_no ? 
             (   <>
                 <button type="button" id="editbtn" value={rv.product_no} onClick={()=>navigate(`/UpdateReview/${rv.rev_no}`)}>수정</button>
-                <button type="button" id="deletebtn" value={rv.rev_no} onClick={handleReviewDelete} >삭제</button>
+                <button type="button" id="deletebtn" value={rv.rev_no}onClick={handleReviewDelete} >삭제</button>
                 </>
             ) : (
                 <></>
